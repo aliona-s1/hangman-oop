@@ -41,6 +41,7 @@ public class Main {
         while (maskedWord.contains("_")) {
             showMaskedWord(maskedWord);
             char letter = inputLetter();
+            validateInputLetter(letter);
             maskedWord = revealGuessedLetters(word, maskedWord, letter);
         }
         System.out.println("Поздравляем! Вы угадали слово: " + maskedWord);
@@ -51,9 +52,15 @@ public class Main {
     }
 
     public static char inputLetter() {
-        // TODO: validation
         System.out.print("Введите букву: ");
         return scanner.nextLine().charAt(0);
+    }
+
+    public static void validateInputLetter(char letter) {
+        if ((letter >= 'а' && letter <= 'я') || (letter >= 'А' && letter <= 'Я')) {
+        } else {
+            System.out.println("Некорректный ввод. Введите букву русского алфавита");
+        }
     }
 
     public static String revealGuessedLetters(String word, String maskedWord, char letter) {

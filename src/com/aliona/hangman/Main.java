@@ -7,6 +7,7 @@ import java.util.Set;
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static Set<Character> guessedLetters = new HashSet<>();
+    private static int ATTEMP_RATE = 6;
 
     public static void main(String[] args) {
         launchMenu();
@@ -38,13 +39,22 @@ public class Main {
         String word = "телевизор";
         String maskedWord = "_".repeat(word.length());
 
-        while (maskedWord.contains("_")) {
+        while (!isGameFinished(maskedWord)) {
             showMaskedWord(maskedWord);
             char letter = inputLetter();
             validateInputLetter(letter);
             maskedWord = revealGuessedLetters(word, maskedWord, letter);
         }
-        System.out.println("Поздравляем! Вы угадали слово: " + maskedWord);
+
+        if (maskedWord.contains("_")) {
+            System.out.println("Вы проиграли!");
+        } else {
+            System.out.println("Поздравляем! Вы угадали слово: " + maskedWord);
+        }
+    }
+
+    private static boolean isGameFinished(String maskedWord) {
+        return ATTEMP_RATE == 0 || !maskedWord.contains("_");
     }
 
     public static void showMaskedWord(String maskedWord) {
@@ -78,6 +88,13 @@ public class Main {
                 updatedMaskedWord.setCharAt(i, letter);
             }
         }
+
+        if (!word.contains(Character.toString(letter))) {
+            System.out.println("Такой буквы здесь нет!");
+            ATTEMP_RATE--;
+        }
+        System.out.println("Осталось попыток: " + ATTEMP_RATE);
+
         return updatedMaskedWord.toString();
     }
 }

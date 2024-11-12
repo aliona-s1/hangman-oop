@@ -6,8 +6,12 @@ import java.util.Set;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
-    private static Set<Character> guessedLetters = new HashSet<>();
-    private static int ATTEMP_RATE = 6;
+    private static Set<String> guessedLetters = new HashSet<>();
+    private static final String START = "н";
+    private static final String QUIT = "в";
+    private static int attemptRate = 6;
+    private static String word = "телевизор";
+    private static String maskedWord = "_".repeat(word.length());
 
     public static void main(String[] args) {
         launchMenu();
@@ -15,14 +19,14 @@ public class Main {
 
     public static void launchMenu() {
         while (true) {
-            System.out.println("[н]ачать новую игру или [в]ыйти из игры.");
+            System.out.println("Хотите [н]ачать новую игру или [в]ыйти из игры?");
             String letter = scanner.nextLine();
 
-            if (letter.equals("в")) {
-                System.out.println("Вы вышли из игры.");
-                break;
-            } else if (letter.equals("н")) {
+            if (letter.equals(START)) {
                 startGame();
+                break;
+            } else if (letter.equals(QUIT)) {
+                System.out.println("Вы вышли из игры.");
                 break;
             } else {
                 System.out.println("Некорректный ввод.");
@@ -36,44 +40,41 @@ public class Main {
     }
 
     public static void startGameLoop() {
-        String word = "телевизор";
-        String maskedWord = "_".repeat(word.length());
-
         while (!isGameFinished(maskedWord)) {
             showMaskedWord(maskedWord);
-            char letter = inputLetter();
+            String letter = inputLetter();
             validateInputLetter(letter);
             maskedWord = revealGuessedLetters(word, maskedWord, letter);
         }
 
         if (maskedWord.contains("_")) {
-            System.out.println("Вы проиграли!");
+            System.out.println("Вы проиграли!. Загаданное слово: " + word);
         } else {
-            System.out.println("Поздравляем! Вы угадали слово: " + maskedWord);
+            System.out.println("Поздравляем! Вы угадали слово: " + word);
         }
-    }
-
-    private static boolean isGameFinished(String maskedWord) {
-        return ATTEMP_RATE == 0 || !maskedWord.contains("_");
     }
 
     public static void showMaskedWord(String maskedWord) {
         System.out.println("Текущее слово: " + maskedWord);
     }
 
-    public static char inputLetter() {
+    public static String inputLetter() {
         System.out.print("Введите букву: ");
-        return scanner.nextLine().charAt(0);
+             return scanner.nextLine().trim();
     }
 
-    public static void validateInputLetter(char letter) {
-        if ((letter >= 'а' && letter <= 'я') || (letter >= 'А' && letter <= 'Я')) {
+    private static boolean isGameFinished(String maskedWord) {
+        return attemptRate == 0 || !maskedWord.contains("_");
+    }
+
+    public static void validateInputLetter(String letter) {
+        if (letter.matches("[а-яА-Я,ё,Ё]")) {
         } else {
             System.out.println("Некорректный ввод. Введите букву русского алфавита");
         }
     }
 
-    public static String revealGuessedLetters(String word, String maskedWord, char letter) {
+    public static String revealGuessedLetters(String word, String maskedWord, String letter) {
         StringBuilder updatedMaskedWord = new StringBuilder(maskedWord);
 
         if (guessedLetters.contains(letter)) {
@@ -84,16 +85,18 @@ public class Main {
         guessedLetters.add(letter);
 
         for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) == letter) {
-                updatedMaskedWord.setCharAt(i, letter);
+            String currentLetter = word.substring(i, i+1);
+
+            if (currentLetter.equals(letter)) {
+                updatedMaskedWord.replace(i, i+1, letter);
             }
         }
 
-        if (!word.contains(Character.toString(letter))) {
+        if (!word.contains(letter)) {
             System.out.println("Такой буквы здесь нет!");
-            ATTEMP_RATE--;
+            attemptRate--;
         }
-        System.out.println("Осталось попыток: " + ATTEMP_RATE);
+        System.out.println("Осталось попыток: " + attemptRate);
 
         return updatedMaskedWord.toString();
     }

@@ -9,9 +9,6 @@ public class Main {
     private static Set<String> guessedLetters = new HashSet<>();
     private static final String START = "н";
     private static final String QUIT = "в";
-    private static int attemptRate = 6;
-    private static String word = "телевизор";
-    private static String maskedWord = "_".repeat(word.length());
 
     public static void main(String[] args) {
         launchMenu();
@@ -36,15 +33,35 @@ public class Main {
 
     public static void startGame() {
         System.out.println("Вы начали игру.");
-        startGameLoop();
+        String word = "телевизор";
+        String maskedWord = "_".repeat(word.length());
+
+        startGameLoop(word, maskedWord);
     }
 
-    public static void startGameLoop() {
-        while (!isGameFinished(maskedWord)) {
+    public static void startGameLoop(String word, String maskedWord) {
+        int attemptRate = 6;
+        Set<String> inputtedLetters = new HashSet<>();
+        while (!isGameFinished(maskedWord, attemptRate)) {
             showMaskedWord(maskedWord);
             String letter = inputLetter();
             validateInputLetter(letter);
-            maskedWord = revealGuessedLetters(word, maskedWord, letter);
+
+            if (isLetterAlreadyInput(letter, inputtedLetters)) {
+                System.out.println("Эта буква уже вводилась! Попробуйте другую.");
+                continue;
+            }
+
+            inputtedLetters.add(letter);
+
+            if (!isLetterInWord(word, letter)) {
+                System.out.println("Такой буквы здесь нет! Попробуйте другую.");
+                attemptRate--;
+            }
+            System.out.println("Осталось попыток: " + attemptRate);
+
+            addGuessedLetter(letter);
+            maskedWord = updateMaskedWord(word, maskedWord, letter);
         }
 
         if (maskedWord.contains("_")) {
@@ -60,44 +77,45 @@ public class Main {
 
     public static String inputLetter() {
         System.out.print("Введите букву: ");
-             return scanner.nextLine().trim();
+        return scanner.nextLine().trim();
     }
 
-    private static boolean isGameFinished(String maskedWord) {
-        return attemptRate == 0 || !maskedWord.contains("_");
-    }
-
-    public static void validateInputLetter(String letter) {
-        if (letter.matches("[а-яА-Я,ё,Ё]")) {
-        } else {
-            System.out.println("Некорректный ввод. Введите букву русского алфавита");
+    public static boolean validateInputLetter(String letter) {
+        if (letter.matches("[а-яА-ЯёЁ]")) {
+            return true;
+        }
+        else {
+            System.out.println("Введите букву русского алфавита.");
+            return false;
         }
     }
 
-    public static String revealGuessedLetters(String word, String maskedWord, String letter) {
+    public static boolean isLetterAlreadyInput(String letter, Set<String> inputtedLetters) {
+        return inputtedLetters.contains(letter);
+    }
+
+    private static boolean isLetterInWord(String word, String letter) {
+        return word.contains(letter);
+    }
+
+    public static void addGuessedLetter(String letter) {
+        guessedLetters.add(letter);
+    }
+
+    public static String updateMaskedWord(String word, String maskedWord, String letter) {
         StringBuilder updatedMaskedWord = new StringBuilder(maskedWord);
 
-        if (guessedLetters.contains(letter)) {
-            System.out.println("Эта буква уже была угадана! Попробуйте другую: ");
-            return maskedWord;
-        }
-
-        guessedLetters.add(letter);
-
         for (int i = 0; i < word.length(); i++) {
-            String currentLetter = word.substring(i, i+1);
+            String currentLetter = word.substring(i, i + 1);
 
             if (currentLetter.equals(letter)) {
-                updatedMaskedWord.replace(i, i+1, letter);
+                updatedMaskedWord.replace(i, i + 1, letter);
             }
         }
-
-        if (!word.contains(letter)) {
-            System.out.println("Такой буквы здесь нет!");
-            attemptRate--;
-        }
-        System.out.println("Осталось попыток: " + attemptRate);
-
         return updatedMaskedWord.toString();
+    }
+
+    private static boolean isGameFinished(String maskedWord, int attemptRate) {
+        return attemptRate == 0 || !maskedWord.contains("_");
     }
 }

@@ -1,8 +1,6 @@
 package com.aliona.hangman;
 
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
@@ -41,27 +39,33 @@ public class Main {
 
     public static void startGameLoop(String word, String maskedWord) {
         int attemptRate = 6;
-        Set<String> inputtedLetters = new HashSet<>();
+        List<String> inputtedLetters = new ArrayList<>();
+
         while (!isGameFinished(maskedWord, attemptRate)) {
             showMaskedWord(maskedWord);
             String letter = inputLetter();
-            validateInputLetter(letter);
+
+            if (!validateInputLetter(letter)) {
+                System.out.println("Введите букву русского алфавита.");
+                continue;
+            }
 
             if (isLetterAlreadyInput(letter, inputtedLetters)) {
                 System.out.println("Эта буква уже вводилась! Попробуйте другую.");
                 continue;
             }
 
-            inputtedLetters.add(letter);
-
-            if (!isLetterInWord(word, letter)) {
-                System.out.println("Такой буквы здесь нет! Попробуйте другую.");
+            if (isLetterInWord(word, letter)) {
+                addGuessedLetter(letter);
+                maskedWord = updateMaskedWord(word, maskedWord, letter);
+            } else {
+                System.out.println("Такой буквы в слове нет! Попробуйте другую.");
                 attemptRate--;
             }
             System.out.println("Осталось попыток: " + attemptRate);
 
-            addGuessedLetter(letter);
-            maskedWord = updateMaskedWord(word, maskedWord, letter);
+            inputtedLetters.add(letter);
+            System.out.println("Введенные буквы: " + String.join(",", inputtedLetters));
         }
 
         if (maskedWord.contains("_")) {
@@ -81,16 +85,10 @@ public class Main {
     }
 
     public static boolean validateInputLetter(String letter) {
-        if (letter.matches("[а-яА-ЯёЁ]")) {
-            return true;
-        }
-        else {
-            System.out.println("Введите букву русского алфавита.");
-            return false;
-        }
+        return letter.matches("[а-яА-ЯёЁ]");
     }
 
-    public static boolean isLetterAlreadyInput(String letter, Set<String> inputtedLetters) {
+    public static boolean isLetterAlreadyInput(String letter, List<String> inputtedLetters) {
         return inputtedLetters.contains(letter);
     }
 

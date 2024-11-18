@@ -1,18 +1,18 @@
 package com.aliona.hangman;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
-    private static Set<String> guessedLetters = new HashSet<>();
     private static final String START = "н";
-    private static final String QUIT = "в";
+    private static final String EXIT = "в";
 
     public static void main(String[] args) {
-        launchMenu();
+        startMenu();
     }
 
-    public static void launchMenu() {
+    public static void startMenu() {
         while (true) {
             System.out.println("Хотите [н]ачать новую игру или [в]ыйти из игры?");
             String letter = scanner.nextLine();
@@ -20,7 +20,7 @@ public class Main {
             if (letter.equals(START)) {
                 startGame();
                 break;
-            } else if (letter.equals(QUIT)) {
+            } else if (letter.equals(EXIT)) {
                 System.out.println("Вы вышли из игры.");
                 break;
             } else {
@@ -38,15 +38,15 @@ public class Main {
     }
 
     public static void startGameLoop(String word, String maskedWord) {
-        int attemptRate = 6;
+        AtomicInteger attemptRate = new AtomicInteger(6);
         List<String> inputtedLetters = new ArrayList<>();
 
         while (!isGameFinished(maskedWord, attemptRate)) {
             showMaskedWord(maskedWord);
             String letter = inputLetter();
 
-            if (!validateInputLetter(letter)) {
-                System.out.println("Введите букву русского алфавита.");
+            if (!isInputLetterValid(letter)) {
+                System.out.println("Введите одну букву русского алфавита.");
                 continue;
             }
 
@@ -55,21 +55,14 @@ public class Main {
                 continue;
             }
 
-            if (isLetterInWord(word, letter)) {
-                addGuessedLetter(letter);
-                maskedWord = updateMaskedWord(word, maskedWord, letter);
-            } else {
-                System.out.println("Такой буквы в слове нет! Попробуйте другую.");
-                attemptRate--;
-            }
-            System.out.println("Осталось попыток: " + attemptRate);
+            maskedWord = processGuessedLetter(word, letter, maskedWord, attemptRate);
 
             inputtedLetters.add(letter);
             System.out.println("Введенные буквы: " + String.join(",", inputtedLetters));
         }
 
         if (maskedWord.contains("_")) {
-            System.out.println("Вы проиграли!. Загаданное слово: " + word);
+            System.out.println("Вы проиграли! Загаданное слово: " + word);
         } else {
             System.out.println("Поздравляем! Вы угадали слово: " + word);
         }
@@ -84,7 +77,7 @@ public class Main {
         return scanner.nextLine().trim();
     }
 
-    public static boolean validateInputLetter(String letter) {
+    public static boolean isInputLetterValid(String letter) {
         return letter.matches("[а-яА-ЯёЁ]");
     }
 
@@ -96,8 +89,14 @@ public class Main {
         return word.contains(letter);
     }
 
-    public static void addGuessedLetter(String letter) {
-        guessedLetters.add(letter);
+    public static String processGuessedLetter(String word, String letter, String maskedWord, AtomicInteger attemptRate) {
+        if (!isLetterInWord(word, letter)) {
+            System.out.println("Такой буквы в слове нет! Попробуйте другую.");
+            attemptRate.decrementAndGet();
+        }
+        System.out.println("Осталось попыток: " + attemptRate.get());
+
+        return updateMaskedWord(word, maskedWord, letter);
     }
 
     public static String updateMaskedWord(String word, String maskedWord, String letter) {
@@ -113,7 +112,7 @@ public class Main {
         return updatedMaskedWord.toString();
     }
 
-    private static boolean isGameFinished(String maskedWord, int attemptRate) {
-        return attemptRate == 0 || !maskedWord.contains("_");
+    private static boolean isGameFinished(String maskedWord, AtomicInteger attemptRate) {
+        return attemptRate.get() == 0 || !maskedWord.contains("_");
     }
 }

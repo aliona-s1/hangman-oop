@@ -7,6 +7,64 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static final String START = "н";
     private static final String EXIT = "в";
+    private static final String[] HANGMAN_STAGES =
+            {"""
+   ______
+   |    |
+   |
+   |
+   |
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |
+   |
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |    |
+   |
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |   /|
+   |
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |   /
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |   / \\
+   |
+-----------
+"""};
 
     public static void main(String[] args) {
         startMenu();
@@ -39,9 +97,11 @@ public class Main {
 
     public static void startGameLoop(String word, String maskedWord) {
         AtomicInteger attemptRate = new AtomicInteger(6);
+        AtomicInteger errorRate = new AtomicInteger(0);
         List<String> inputtedLetters = new ArrayList<>();
+        System.out.println(HANGMAN_STAGES[errorRate.get()]);
 
-        while (!isGameFinished(maskedWord, attemptRate)) {
+        while (!isGameFinished(maskedWord, errorRate)) {
             showMaskedWord(maskedWord);
             String letter = inputLetter();
 
@@ -55,16 +115,20 @@ public class Main {
                 continue;
             }
 
-            maskedWord = processGuessedLetter(word, letter, maskedWord, attemptRate);
-
+            maskedWord = processGuessedLetter(word, letter, maskedWord, attemptRate, errorRate);
             inputtedLetters.add(letter);
+
+            if (!maskedWord.contains("_")) {
+                System.out.println("Поздравляем! Вы угадали слово: " + word);
+                break;
+            }
+
+            System.out.println(HANGMAN_STAGES[errorRate.get()]);
             System.out.println("Введенные буквы: " + String.join(",", inputtedLetters));
         }
 
         if (maskedWord.contains("_")) {
             System.out.println("Вы проиграли! Загаданное слово: " + word);
-        } else {
-            System.out.println("Поздравляем! Вы угадали слово: " + word);
         }
     }
 
@@ -89,13 +153,13 @@ public class Main {
         return word.contains(letter);
     }
 
-    public static String processGuessedLetter(String word, String letter, String maskedWord, AtomicInteger attemptRate) {
+    public static String processGuessedLetter(String word, String letter, String maskedWord, AtomicInteger attemptRate, AtomicInteger errorRate) {
         if (!isLetterInWord(word, letter)) {
             System.out.println("Такой буквы в слове нет! Попробуйте другую.");
             attemptRate.decrementAndGet();
+            errorRate.incrementAndGet();
+            System.out.println("Осталось попыток: " + attemptRate.get());
         }
-        System.out.println("Осталось попыток: " + attemptRate.get());
-
         return updateMaskedWord(word, maskedWord, letter);
     }
 
@@ -112,7 +176,7 @@ public class Main {
         return updatedMaskedWord.toString();
     }
 
-    private static boolean isGameFinished(String maskedWord, AtomicInteger attemptRate) {
-        return attemptRate.get() == 0 || !maskedWord.contains("_");
+    private static boolean isGameFinished(String maskedWord, AtomicInteger errorRate) {
+        return errorRate.get() == 6 || !maskedWord.contains("_");
     }
 }

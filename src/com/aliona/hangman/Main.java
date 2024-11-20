@@ -100,7 +100,7 @@ public class Main {
         List<String> inputtedLetters = new ArrayList<>();
         System.out.println(HANGMAN_STAGES[errorRate.get()]);
 
-        while (!isGameFinished(maskedWord, errorRate)) {
+        while (!isGameFinished(maskedWord, errorRate, word)) {
             showMaskedWord(maskedWord);
             String letter = inputLetter();
 
@@ -117,7 +117,7 @@ public class Main {
             maskedWord = processGuessedLetter(word, letter, maskedWord, attemptRate, errorRate);
             inputtedLetters.add(letter);
 
-            if (!maskedWord.contains("_")) {
+            if (isWordGuessed(word, maskedWord)) {
                 System.out.println("\nПоздравляем! Вы угадали слово: " + word);
                 return;
             }
@@ -175,7 +175,11 @@ public class Main {
         return updatedMaskedWord.toString();
     }
 
-    private static boolean isGameFinished(String maskedWord, AtomicInteger errorRate) {
-        return errorRate.get() == 6 || !maskedWord.contains("_");
+    private static boolean isWordGuessed(String word, String maskedWord) {
+        return maskedWord.equals(word);
+    }
+
+    private static boolean isGameFinished(String maskedWord, AtomicInteger errorRate, String word) {
+        return errorRate.get() == 6 || isWordGuessed(word, maskedWord);
     }
 }

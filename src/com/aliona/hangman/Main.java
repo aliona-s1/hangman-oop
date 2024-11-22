@@ -91,12 +91,7 @@ public class Main {
     }
 
     public static void startGame() {
-        readDictionary();
-
-        if (words.isEmpty()) {
-            System.out.println("\nИзвините, ошибка!");
-            System.exit(1);
-        }
+        initializeDictionary();
 
         System.out.println("\nВы начали игру.");
 
@@ -106,16 +101,20 @@ public class Main {
         startGameLoop(word, maskedWord);
     }
 
-    private static void readDictionary() {
-        ClassLoader classLoader = Main.class.getClassLoader();
-        try (InputStream inputStream = classLoader.getResourceAsStream("dictionary.txt")) {
-            try (Scanner scanner = new Scanner(inputStream)) {
-                while (scanner.hasNextLine()) {
-                    String word = scanner.nextLine().trim();
-                    if (!word.isEmpty()) {
-                        words.add(word);
-                    }
+    private static void initializeDictionary() {
+        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("dictionary.txt");
+             Scanner scanner = new Scanner(inputStream)) {
+
+            while (scanner.hasNextLine()) {
+                String word = scanner.nextLine().trim();
+                if (!word.isEmpty()) {
+                    words.add(word);
                 }
+            }
+
+            if (words.isEmpty()) {
+                System.out.println("\nИзвините, ошибка!");
+                System.exit(1);
             }
         } catch (NullPointerException | IOException e) {
             System.out.println("\nИзвините, ошибка!");

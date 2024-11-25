@@ -77,12 +77,12 @@ public class Main {
     public static void startMenu() {
         while (true) {
             System.out.println("\nХотите начать игру? Введите да/нет.\n");
-            String letter = scanner.nextLine().trim().toLowerCase();
+            String letter = scanner.nextLine().toLowerCase();
 
             if (letter.equals(START)) {
                 startGame();
             } else if (letter.equals(EXIT)) {
-                System.out.println("\nВы решили не начинать игру. До новый встреч!");
+                System.out.println("\nВы вышли из приложения.");
                 break;
             } else {
                 System.out.println("\nНекорректный ввод.");
@@ -145,8 +145,10 @@ public class Main {
                 System.out.println("\nПоздравляем! Вы угадали слово: " + word);
                 return;
             }
+            System.out.println(HANGMAN_STAGES[errorRate.get()]);
+            System.out.println("Введенные буквы: " + String.join(",", inputtedLetters));
+            System.out.println("Осталось попыток: " + attemptRate.get());
 
-            System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
         }
 
         if (errorRate.get() == 6) {
@@ -155,12 +157,12 @@ public class Main {
     }
 
     public static void showMaskedWord(String maskedWord) {
-        System.out.println("\nТекущее слово: " + maskedWord);
+        System.out.println("Текущее слово: " + maskedWord);
     }
 
     public static String inputLetter() {
         System.out.print("\nВведите букву: ");
-        return scanner.nextLine().trim().toLowerCase();
+        return scanner.nextLine().toLowerCase();
     }
 
     public static boolean isInputLetterValid(String letter) {
@@ -177,11 +179,9 @@ public class Main {
 
     public static String processGuessedLetter(String word, String letter, String maskedWord, AtomicInteger attemptRate, AtomicInteger errorRate) {
         if (!isLetterInWord(word, letter)) {
-            System.out.println("\nТакой буквы в слове нет!");
             attemptRate.decrementAndGet();
             errorRate.incrementAndGet();
-            System.out.println(HANGMAN_STAGES[errorRate.get()]);
-            System.out.println("Осталось попыток: " + attemptRate.get());
+            System.out.println("\nТакой буквы в слове нет!");
         }
         return updateMaskedWord(word, maskedWord, letter);
     }

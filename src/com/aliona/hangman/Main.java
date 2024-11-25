@@ -75,9 +75,10 @@ public class Main {
     }
 
     public static void startMenu() {
+        System.out.println("\nХотите сыграть?");
         while (true) {
-            System.out.println("\nХотите начать игру? Введите да/нет.\n");
-            String letter = scanner.nextLine().toLowerCase();
+            System.out.println("\nВведите:\n'н' - чтобы начать игру.\n'в' - чтобы выйти из приложения.\n\nВаш выбор:");
+            String letter = scanner.nextLine().trim().toLowerCase();
 
             if (letter.equals(START)) {
                 startGame();
@@ -93,7 +94,7 @@ public class Main {
     public static void startGame() {
         initializeDictionary();
 
-        System.out.println("\nВы начали игру.");
+        System.out.println("\nНачинаем игру!");
 
         String word = words.get(random.nextInt(words.size()));
         String maskedWord = "_".repeat(word.length());

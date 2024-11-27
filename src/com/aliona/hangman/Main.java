@@ -3,14 +3,14 @@ package com.aliona.hangman;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Random random = new Random();
     private static final List<String> words = new ArrayList<>();
-    private static final String START = "да";
-    private static final String EXIT = "нет";
+
+    private static final String START = "н";
+    private static final String EXIT = "в";
     private static final String[] HANGMAN_STAGES =
             {"""
    ______
@@ -124,10 +124,10 @@ public class Main {
     }
 
     public static void startGameLoop(String word, String maskedWord) {
-        AtomicInteger attemptRate = new AtomicInteger(6);
-        AtomicInteger errorRate = new AtomicInteger(0);
+        int attemptRate = 6;
+        int errorRate = 0;
         List<String> inputtedLetters = new ArrayList<>();
-        System.out.println(HANGMAN_STAGES[errorRate.get()]);
+        System.out.println(HANGMAN_STAGES[errorRate]);
 
         while (!isGameFinished(maskedWord, errorRate, word)) {
             showMaskedWord(maskedWord);
@@ -138,7 +138,11 @@ public class Main {
             } else if (isLetterAlreadyInput(letter, inputtedLetters)) {
                 System.out.println("\nЭта буква уже вводилась! Попробуйте другую.");
             } else {
-                maskedWord = processGuessedLetter(word, letter, maskedWord, attemptRate, errorRate);
+                int[] result = processGuessedLetter(word, letter, attemptRate, errorRate);
+                attemptRate = result[0];
+                errorRate = result[1];
+
+                maskedWord = updateMaskedWord(word, maskedWord, letter);
                 inputtedLetters.add(letter);
             }
 
@@ -146,13 +150,13 @@ public class Main {
                 System.out.println("\nПоздравляем! Вы угадали слово: " + word);
                 return;
             }
-            System.out.println(HANGMAN_STAGES[errorRate.get()]);
+            System.out.println(HANGMAN_STAGES[errorRate]);
             System.out.println("Введенные буквы: " + String.join(",", inputtedLetters));
-            System.out.println("Осталось попыток: " + attemptRate.get());
+            System.out.println("Осталось попыток: " + attemptRate);
 
         }
 
-        if (errorRate.get() == 6) {
+        if (errorRate == 6) {
             System.out.println("\nВы проиграли! Загаданное слово: " + word);
         }
     }
@@ -178,13 +182,13 @@ public class Main {
         return word.contains(letter);
     }
 
-    public static String processGuessedLetter(String word, String letter, String maskedWord, AtomicInteger attemptRate, AtomicInteger errorRate) {
+    public static int[] processGuessedLetter(String word, String letter, int attemptRate, int errorRate) {
         if (!isLetterInWord(word, letter)) {
-            attemptRate.decrementAndGet();
-            errorRate.incrementAndGet();
+            attemptRate--;
+            errorRate++;
             System.out.println("\nТакой буквы в слове нет!");
         }
-        return updateMaskedWord(word, maskedWord, letter);
+        return new int[]{attemptRate, errorRate};
     }
 
     public static String updateMaskedWord(String word, String maskedWord, String letter) {
@@ -204,7 +208,7 @@ public class Main {
         return maskedWord.equals(word);
     }
 
-    private static boolean isGameFinished(String maskedWord, AtomicInteger errorRate, String word) {
-        return errorRate.get() == 6 || isWordGuessed(word, maskedWord);
+    private static boolean isGameFinished(String maskedWord, int errorRate, String word) {
+        return errorRate == 6 || isWordGuessed(word, maskedWord);
     }
 }

@@ -11,6 +11,9 @@ public class Main {
 
     private static final String START = "н";
     private static final String EXIT = "в";
+    private static final int MIN_ERROR_RATE = 0;
+    private static final int MAX_ERROR_RATE = 6;
+    private static final int MAX_ATTEMPT_RATE = 6;
     private static final String[] HANGMAN_STAGES =
             {"""
    ______
@@ -126,8 +129,8 @@ public class Main {
     }
 
     public static void startGameLoop(String word, String maskedWord) {
-        int attemptRate = 6;
-        int errorRate = 0;
+        int attemptRate = MAX_ATTEMPT_RATE;
+        int errorRate = MIN_ERROR_RATE;
         List<String> inputtedLetters = new ArrayList<>();
         System.out.println(HANGMAN_STAGES[errorRate]);
 
@@ -158,7 +161,7 @@ public class Main {
 
         }
 
-        if (errorRate == 6) {
+        if (errorRate == MAX_ERROR_RATE) {
             System.out.println("\nВы проиграли! Загаданное слово: " + word);
         }
     }
@@ -211,6 +214,6 @@ public class Main {
     }
 
     private static boolean isGameFinished(String maskedWord, int errorRate, String word) {
-        return errorRate == 6 || isWordGuessed(word, maskedWord);
+        return errorRate == MAX_ERROR_RATE || isWordGuessed(word, maskedWord);
     }
 }

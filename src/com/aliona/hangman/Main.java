@@ -85,6 +85,7 @@ public class Main {
                 startGame();
             } else if (letter.equals(EXIT)) {
                 System.out.println("\nВы вышли из приложения.");
+                SCANNER.close();
                 break;
             } else {
                 System.out.println("\nНекорректный ввод.");

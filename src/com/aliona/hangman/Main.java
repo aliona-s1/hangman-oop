@@ -5,9 +5,9 @@ import java.io.InputStream;
 import java.util.*;
 
 public class Main {
-    private static final Scanner scanner = new Scanner(System.in);
-    private static final Random random = new Random();
-    private static final List<String> words = new ArrayList<>();
+    private static final Scanner SCANNER = new Scanner(System.in);
+    private static final Random RANDOM = new Random();
+    private static final List<String> WORDS = new ArrayList<>();
 
     private static final String START = "н";
     private static final String EXIT = "в";
@@ -77,8 +77,9 @@ public class Main {
     public static void startMenu() {
         System.out.println("\nХотите сыграть?");
         while (true) {
-            System.out.println("\nВведите:\n'н' - чтобы начать игру.\n'в' - чтобы выйти из приложения.\n\nВаш выбор:");
-            String letter = scanner.nextLine().trim().toLowerCase();
+            System.out.printf("\nВведите:\n%s - чтобы начать игру.\n%s - чтобы выйти из приложения.", START, EXIT);
+            System.out.print("\nВаш выбор: ");
+            String letter = SCANNER.nextLine().trim().toLowerCase();
 
             if (letter.equals(START)) {
                 startGame();
@@ -96,7 +97,7 @@ public class Main {
 
         System.out.println("\nНачинаем игру!");
 
-        String word = words.get(random.nextInt(words.size()));
+        String word = WORDS.get(RANDOM.nextInt(WORDS.size()));
         String maskedWord = "_".repeat(word.length());
 
         startGameLoop(word, maskedWord);
@@ -109,11 +110,11 @@ public class Main {
             while (scanner.hasNextLine()) {
                 String word = scanner.nextLine().trim();
                 if (!word.isEmpty()) {
-                    words.add(word);
+                    WORDS.add(word);
                 }
             }
 
-            if (words.isEmpty()) {
+            if (WORDS.isEmpty()) {
                 System.out.println("\nИзвините, ошибка!");
                 System.exit(1);
             }
@@ -167,7 +168,7 @@ public class Main {
 
     public static String inputLetter() {
         System.out.print("\nВведите букву: ");
-        return scanner.nextLine().toLowerCase();
+        return SCANNER.nextLine().toLowerCase();
     }
 
     public static boolean isInputLetterValid(String letter) {

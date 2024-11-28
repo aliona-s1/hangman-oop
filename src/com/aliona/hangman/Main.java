@@ -14,6 +14,7 @@ public class Main {
     private static final int MIN_ERROR_RATE = 0;
     private static final int MAX_ERROR_RATE = 6;
     private static final int MAX_ATTEMPT_RATE = 6;
+    private static final String MASKING_SIMBOL = "_";
     private static final String[] HANGMAN_STAGES =
             {"""
    ______
@@ -80,7 +81,7 @@ public class Main {
     public static void startMenu() {
         System.out.println("\nХотите сыграть?");
         while (true) {
-            System.out.printf("\nВведите:\n%s - чтобы начать игру.\n%s - чтобы выйти из приложения.", START, EXIT);
+            System.out.printf("\nВведите:\n%s - чтобы начать игру.\n%s - чтобы выйти из приложения.\n", START, EXIT);
             System.out.print("\nВаш выбор: ");
             String letter = SCANNER.nextLine().trim().toLowerCase();
 
@@ -102,7 +103,7 @@ public class Main {
         System.out.println("\nНачинаем игру!");
 
         String word = WORDS.get(RANDOM.nextInt(WORDS.size()));
-        String maskedWord = "_".repeat(word.length());
+        String maskedWord = MASKING_SIMBOL.repeat(word.length());
 
         startGameLoop(word, maskedWord);
     }
@@ -158,7 +159,6 @@ public class Main {
             System.out.println(HANGMAN_STAGES[errorRate]);
             System.out.println("Введенные буквы: " + String.join(",", inputtedLetters));
             System.out.println("Осталось попыток: " + attemptRate);
-
         }
 
         if (errorRate == MAX_ERROR_RATE) {
@@ -202,7 +202,7 @@ public class Main {
         for (int i = 0; i < word.length(); i++) {
             String currentLetter = word.substring(i, i + 1);
 
-            if (currentLetter.equalsIgnoreCase(letter)) {
+            if (currentLetter.equals(letter)) {
                 updatedMaskedWord.replace(i, i + 1, currentLetter);
             }
         }

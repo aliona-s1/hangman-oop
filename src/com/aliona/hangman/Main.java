@@ -73,13 +73,13 @@ public class Main {
 """};
 
     public static void main(String[] args) {
+        initializeDictionary();
         startMenu();
     }
 
     public static void startMenu() {
-        System.out.println("\nХотите сыграть?");
         while (true) {
-            System.out.printf("\nВведите:\n%s - чтобы начать игру.\n%s - чтобы выйти из приложения.\n", START, EXIT);
+            System.out.printf("\nХотите сыграть?\n%s - начать игру\n%s - выйти из приложения\n", START, EXIT);
             System.out.print("\nВаш выбор: ");
             String letter = SCANNER.nextLine().trim().toLowerCase();
 
@@ -96,7 +96,6 @@ public class Main {
     }
 
     public static void startGame() {
-        initializeDictionary();
 
         System.out.println("\nНачинаем игру!");
 
@@ -141,7 +140,7 @@ public class Main {
             } else if (isLetterAlreadyInput(letter, inputtedLetters)) {
                 System.out.println("\nЭта буква уже вводилась! Попробуйте другую.");
             } else {
-                mistakes = processGuessedLetter(word, letter, mistakes);
+                mistakes = updateMistakes(word, letter, mistakes);
                 maskedWord = updateMaskedWord(word, maskedWord, letter);
                 inputtedLetters.add(letter);
             }
@@ -161,7 +160,7 @@ public class Main {
     }
 
     public static void showMaskedWord(String maskedWord) {
-        System.out.println("Текущее слово: " + maskedWord);
+        System.out.println("Загаданное слово: " + maskedWord);
     }
 
     public static String inputLetter() {
@@ -177,7 +176,7 @@ public class Main {
         return inputtedLetters.contains(letter);
     }
 
-    public static int processGuessedLetter(String word, String letter, int mistakes) {
+    public static int updateMistakes(String word, String letter, int mistakes) {
         if (!word.contains(letter)) {
             mistakes++;
             System.out.println("\nТакой буквы в слове нет!");

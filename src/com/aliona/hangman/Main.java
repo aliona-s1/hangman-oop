@@ -11,9 +11,7 @@ public class Main {
 
     private static final String START = "н";
     private static final String EXIT = "в";
-    private static final int MIN_ERROR_RATE = 0;
-    private static final int MAX_ERROR_RATE = 6;
-    private static final int MAX_ATTEMPT_RATE = 6;
+    private static final int MAX_MISTAKES = 6;
     private static final String MASKING_SIMBOL = "_";
     private static final String[] HANGMAN_STAGES =
             {"""
@@ -130,12 +128,11 @@ public class Main {
     }
 
     public static void startGameLoop(String word, String maskedWord) {
-        int attemptRate = MAX_ATTEMPT_RATE;
-        int errorRate = MIN_ERROR_RATE;
+        int mistakes = 0;
         List<String> inputtedLetters = new ArrayList<>();
-        System.out.println(HANGMAN_STAGES[errorRate]);
+        System.out.println(HANGMAN_STAGES[mistakes]);
 
-        while (!isGameFinished(maskedWord, errorRate, word)) {
+        while (!isGameFinished(maskedWord, mistakes, word)) {
             showMaskedWord(maskedWord);
             String letter = inputLetter();
 
@@ -144,10 +141,7 @@ public class Main {
             } else if (isLetterAlreadyInput(letter, inputtedLetters)) {
                 System.out.println("\nЭта буква уже вводилась! Попробуйте другую.");
             } else {
-                int[] result = processGuessedLetter(word, letter, attemptRate, errorRate);
-                attemptRate = result[0];
-                errorRate = result[1];
-
+                mistakes = processGuessedLetter(word, letter, mistakes);
                 maskedWord = updateMaskedWord(word, maskedWord, letter);
                 inputtedLetters.add(letter);
             }
@@ -156,12 +150,12 @@ public class Main {
                 System.out.println("\nПоздравляем! Вы угадали слово: " + word);
                 return;
             }
-            System.out.println(HANGMAN_STAGES[errorRate]);
+            System.out.println(HANGMAN_STAGES[mistakes]);
             System.out.println("Введенные буквы: " + String.join(",", inputtedLetters));
-            System.out.println("Осталось попыток: " + attemptRate);
+            System.out.println("Ошибок: " + mistakes + " из " + MAX_MISTAKES);
         }
 
-        if (errorRate == MAX_ERROR_RATE) {
+        if (mistakes == MAX_MISTAKES) {
             System.out.println("\nВы проиграли! Загаданное слово: " + word);
         }
     }
@@ -183,17 +177,12 @@ public class Main {
         return inputtedLetters.contains(letter);
     }
 
-    private static boolean isLetterInWord(String word, String letter) {
-        return word.contains(letter);
-    }
-
-    public static int[] processGuessedLetter(String word, String letter, int attemptRate, int errorRate) {
-        if (!isLetterInWord(word, letter)) {
-            attemptRate--;
-            errorRate++;
+    public static int processGuessedLetter(String word, String letter, int mistakes) {
+        if (!word.contains(letter)) {
+            mistakes++;
             System.out.println("\nТакой буквы в слове нет!");
         }
-        return new int[]{attemptRate, errorRate};
+        return mistakes;
     }
 
     public static String updateMaskedWord(String word, String maskedWord, String letter) {
@@ -213,7 +202,7 @@ public class Main {
         return maskedWord.equals(word);
     }
 
-    private static boolean isGameFinished(String maskedWord, int errorRate, String word) {
-        return errorRate == MAX_ERROR_RATE || isWordGuessed(word, maskedWord);
+    private static boolean isGameFinished(String maskedWord, int mistakes, String word) {
+        return mistakes == MAX_MISTAKES || isWordGuessed(word, maskedWord);
     }
 }

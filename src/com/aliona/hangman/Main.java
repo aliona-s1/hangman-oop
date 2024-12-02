@@ -12,97 +12,11 @@ public class Main {
     private static final String START = "н";
     private static final String EXIT = "в";
     private static final int MAX_MISTAKES = 6;
-    private static final String MASKING_SIMBOL = "_";
-    private static final String[] HANGMAN_STAGES =
-            {"""
-   ______
-   |    |
-   |
-   |
-   |
-   |
------------
-""", """
-   ______
-   |    |
-   |    0
-   |
-   |
-   |
------------
-""", """
-   ______
-   |    |
-   |    0
-   |    |
-   |
-   |
------------
-""", """
-   ______
-   |    |
-   |    0
-   |   /|
-   |
-   |
------------
-""", """
-   ______
-   |    |
-   |    0
-   |   /|\\
-   |
-   |
------------
-""", """
-   ______
-   |    |
-   |    0
-   |   /|\\
-   |   /
-   |
------------
-""", """
-   ______
-   |    |
-   |    0
-   |   /|\\
-   |   / \\
-   |
------------
-"""};
+    private static final String MASKING_SYMBOL = "_";
 
     public static void main(String[] args) {
         initializeDictionary();
         startMenu();
-    }
-
-    public static void startMenu() {
-        while (true) {
-            System.out.printf("\nХотите сыграть?\n%s - начать игру\n%s - выйти из приложения\n", START, EXIT);
-            System.out.print("\nВаш выбор: ");
-            String letter = SCANNER.nextLine().trim().toLowerCase();
-
-            if (letter.equals(START)) {
-                startGame();
-            } else if (letter.equals(EXIT)) {
-                System.out.println("\nВы вышли из приложения.");
-                SCANNER.close();
-                break;
-            } else {
-                System.out.println("\nНекорректный ввод.");
-            }
-        }
-    }
-
-    public static void startGame() {
-
-        System.out.println("\nНачинаем игру!");
-
-        String word = WORDS.get(RANDOM.nextInt(WORDS.size()));
-        String maskedWord = MASKING_SIMBOL.repeat(word.length());
-
-        startGameLoop(word, maskedWord);
     }
 
     private static void initializeDictionary() {
@@ -126,10 +40,37 @@ public class Main {
         }
     }
 
-    public static void startGameLoop(String word, String maskedWord) {
+    private static void startMenu() {
+        while (true) {
+            System.out.printf("\nХотите сыграть?\n%s - начать игру\n%s - выйти из приложения\n", START, EXIT);
+            System.out.print("\nВаш выбор: ");
+            String letter = SCANNER.nextLine().trim().toLowerCase();
+
+            if (letter.equals(START)) {
+                startGame();
+            } else if (letter.equals(EXIT)) {
+                System.out.println("\nВы вышли из приложения.");
+                SCANNER.close();
+                break;
+            } else {
+                System.out.println("\nНекорректный ввод.");
+            }
+        }
+    }
+
+    private static void startGame() {
+
+        System.out.println("\nНачинаем игру!");
+
+        String word = WORDS.get(RANDOM.nextInt(WORDS.size()));
+        String maskedWord = MASKING_SYMBOL.repeat(word.length());
+
+        startGameLoop(word, maskedWord);
+    }
+
+    private static void startGameLoop(String word, String maskedWord) {
         int mistakes = 0;
         List<String> inputtedLetters = new ArrayList<>();
-        System.out.println(HANGMAN_STAGES[mistakes]);
 
         while (!isGameFinished(maskedWord, mistakes, word)) {
             printHangman(mistakes);
@@ -150,9 +91,7 @@ public class Main {
                 System.out.println("\nПоздравляем! Вы угадали слово: " + word);
                 return;
             }
-            System.out.println(HANGMAN_STAGES[mistakes]);
-            System.out.println("Введенные буквы: " + String.join(",", inputtedLetters));
-            System.out.println("Ошибок: " + mistakes + " из " + MAX_MISTAKES);
+            showGameState(mistakes, inputtedLetters);
         }
 
         if (mistakes == MAX_MISTAKES) {
@@ -160,24 +99,24 @@ public class Main {
         }
     }
 
-    public static void showMaskedWord(String maskedWord) {
+    private static void showMaskedWord(String maskedWord) {
         System.out.println("Загаданное слово: " + maskedWord);
     }
 
-    public static String inputLetter() {
+    private static String inputLetter() {
         System.out.print("\nВведите букву: ");
         return SCANNER.nextLine().toLowerCase();
     }
 
-    public static boolean isInputLetterValid(String letter) {
+    private static boolean isInputLetterValid(String letter) {
         return letter.matches("[а-яА-ЯЁё]");
     }
 
-    public static boolean isLetterAlreadyInput(String letter, List<String> inputtedLetters) {
+    private static boolean isLetterAlreadyInput(String letter, List<String> inputtedLetters) {
         return inputtedLetters.contains(letter);
     }
 
-    public static int updateMistakes(String word, String letter, int mistakes) {
+    private static int updateMistakes(String word, String letter, int mistakes) {
         if (!word.contains(letter)) {
             mistakes++;
             System.out.println("\nТакой буквы в слове нет!");
@@ -185,7 +124,7 @@ public class Main {
         return mistakes;
     }
 
-    public static String updateMaskedWord(String word, String maskedWord, String letter) {
+    private static String updateMaskedWord(String word, String maskedWord, String letter) {
         StringBuilder updatedMaskedWord = new StringBuilder(maskedWord);
 
         for (int i = 0; i < word.length(); i++) {
@@ -264,8 +203,7 @@ public class Main {
         System.out.println(HANGMAN_STAGES[mistakes]);
     }
 
-    public static void showGameState(int mistakes, List<String> inputtedLetters) {
-        //printHangman(mistakes);
+    private static void showGameState(int mistakes, List<String> inputtedLetters) {
         System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
         System.out.println("Ошибок: " + mistakes + " из " + MAX_MISTAKES);
     }

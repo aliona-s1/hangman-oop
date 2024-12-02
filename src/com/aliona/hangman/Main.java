@@ -132,6 +132,7 @@ public class Main {
         System.out.println(HANGMAN_STAGES[mistakes]);
 
         while (!isGameFinished(maskedWord, mistakes, word)) {
+            printHangman(mistakes);
             showMaskedWord(maskedWord);
             String letter = inputLetter();
 
@@ -199,6 +200,74 @@ public class Main {
 
     private static boolean isWordGuessed(String word, String maskedWord) {
         return maskedWord.equals(word);
+    }
+
+    private static void printHangman(int mistakes) {
+        String[] HANGMAN_STAGES =
+                {"""
+   ______
+   |    |
+   |
+   |
+   |
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |
+   |
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |    |
+   |
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |   /|
+   |
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |   /
+   |
+-----------
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |   / \\
+   |
+-----------
+"""};
+        System.out.println(HANGMAN_STAGES[mistakes]);
+    }
+
+    public static void showGameState(int mistakes, List<String> inputtedLetters) {
+        //printHangman(mistakes);
+        System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
+        System.out.println("Ошибок: " + mistakes + " из " + MAX_MISTAKES);
     }
 
     private static boolean isGameFinished(String maskedWord, int mistakes, String word) {

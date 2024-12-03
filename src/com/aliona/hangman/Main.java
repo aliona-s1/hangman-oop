@@ -71,21 +71,16 @@ public class Main {
     private static void startGameLoop(String word, String maskedWord) {
         int mistakes = 0;
         List<String> inputtedLetters = new ArrayList<>();
+        printHangman(mistakes);
 
         while (!isGameFinished(maskedWord, mistakes, word)) {
-            printHangman(mistakes);
             showMaskedWord(maskedWord);
-            String letter = inputLetter();
 
-            if (!isInputLetterValid(letter)) {
-                System.out.println("\nВведите одну букву русского алфавита.");
-            } else if (isLetterAlreadyInput(letter, inputtedLetters)) {
-                System.out.println("\nЭта буква уже вводилась! Попробуйте другую.");
-            } else {
-                mistakes = updateMistakes(word, letter, mistakes);
-                maskedWord = updateMaskedWord(word, maskedWord, letter);
-                inputtedLetters.add(letter);
-            }
+            String letter = inputValidLetter(inputtedLetters);
+
+            mistakes = updateMistakes(word, letter, mistakes);
+            maskedWord = updateMaskedWord(word, maskedWord, letter);
+            inputtedLetters.add(letter);
 
             if (isWordGuessed(word, maskedWord)) {
                 System.out.println("\nПоздравляем! Вы угадали слово: " + word);
@@ -103,17 +98,22 @@ public class Main {
         System.out.println("Загаданное слово: " + maskedWord);
     }
 
-    private static String inputLetter() {
-        System.out.print("\nВведите букву: ");
-        return SCANNER.nextLine().toLowerCase();
-    }
+    private static String inputValidLetter(List<String> inputtedLetters) {
+        while (true) {
+            System.out.print("\nВведите букву: ");
+            String letter = SCANNER.nextLine().toLowerCase();
 
-    private static boolean isInputLetterValid(String letter) {
-        return letter.matches("[а-яА-ЯЁё]");
-    }
-
-    private static boolean isLetterAlreadyInput(String letter, List<String> inputtedLetters) {
-        return inputtedLetters.contains(letter);
+            if (letter.length() != 1) {
+                System.out.println("Введите одну букву.");
+            } else if (letter.matches("[а-яА-ЯЁё]")) {
+                if (!inputtedLetters.contains(letter)) {
+                    return letter;
+                }
+                System.out.println("\nЭта буква уже вводилась! Попробуйте другую.");
+            } else {
+                System.out.println("\nВведите букву русского алфавита.");
+            }
+        }
     }
 
     private static int updateMistakes(String word, String letter, int mistakes) {
@@ -142,7 +142,7 @@ public class Main {
     }
 
     private static void printHangman(int mistakes) {
-        String[] HANGMAN_STAGES =
+        String[] hangmanStages =
                 {"""
    ______
    |    |
@@ -200,12 +200,13 @@ public class Main {
    |
 -----------
 """};
-        System.out.println(HANGMAN_STAGES[mistakes]);
+        System.out.println(hangmanStages[mistakes]);
     }
 
     private static void showGameState(int mistakes, List<String> inputtedLetters) {
-        System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
+        printHangman(mistakes);
         System.out.println("Ошибок: " + mistakes + " из " + MAX_MISTAKES);
+        System.out.println("Введенные буквы: " + String.join(",", inputtedLetters) + "\n");
     }
 
     private static boolean isGameFinished(String maskedWord, int mistakes, String word) {

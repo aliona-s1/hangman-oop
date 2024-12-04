@@ -30,12 +30,10 @@ public class Main {
             }
 
             if (WORDS.isEmpty()) {
-                System.out.println("\nИзвините, ошибка!");
-                System.exit(1);
+                throw new RuntimeException("\nСловарь пуст.");
             }
         } catch (NullPointerException | IOException e) {
-            System.out.println("\nИзвините, ошибка!");
-            System.exit(1);
+            throw new RuntimeException("Файл не найден.");
         }
     }
 

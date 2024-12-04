@@ -78,14 +78,14 @@ public class Main {
             maskedWord = updateMaskedWord(word, maskedWord, letter);
             inputtedLetters.add(letter);
 
-            if (isWordGuessed(word, maskedWord)) {
+            if (isWin(word, maskedWord)) {
                 System.out.println("\nПоздравляем! Вы угадали слово: " + word);
                 return;
             }
             showGameState(mistakes, inputtedLetters);
         }
 
-        if (mistakes == MAX_MISTAKES) {
+        if (isLoss(mistakes)) {
             System.out.println("\nВы проиграли! Загаданное слово: " + word);
         }
     }
@@ -131,10 +131,6 @@ public class Main {
             }
         }
         return updatedMaskedWord.toString();
-    }
-
-    private static boolean isWordGuessed(String word, String maskedWord) {
-        return maskedWord.equals(word);
     }
 
     private static void printHangman(int mistakes) {
@@ -205,7 +201,15 @@ public class Main {
         System.out.println("Введенные буквы: " + String.join(",", inputtedLetters) + "\n");
     }
 
+    private static boolean isWin(String word, String maskedWord) {
+        return maskedWord.equals(word);
+    }
+
+    private static boolean isLoss(int mistakes) {
+        return mistakes == MAX_MISTAKES;
+    }
+
     private static boolean isGameFinished(String maskedWord, int mistakes, String word) {
-        return mistakes == MAX_MISTAKES || isWordGuessed(word, maskedWord);
+        return isLoss(mistakes) || isWin(word, maskedWord);
     }
 }

@@ -8,11 +8,10 @@ public class Main {
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final Random RANDOM = new Random();
     private static final List<String> WORDS = new ArrayList<>();
-
     private static final String START = "н";
     private static final String EXIT = "в";
     private static final int MAX_MISTAKES = 6;
-    private static final String MASKING_SYMBOL = "_";
+    private static final String MASKING_SYMBOL = "*";
 
     public static void main(String[] args) {
         initializeDictionary();
@@ -59,7 +58,6 @@ public class Main {
     }
 
     private static void startGame() {
-
         System.out.println("\nНачинаем игру!");
 
         String word = WORDS.get(RANDOM.nextInt(WORDS.size()));
@@ -95,7 +93,7 @@ public class Main {
     }
 
     private static void showMaskedWord(String maskedWord) {
-        System.out.println("Загаданное слово: " + maskedWord);
+        System.out.println(maskedWord);
     }
 
     private static String inputValidLetter(List<String> inputtedLetters) {
@@ -150,7 +148,7 @@ public class Main {
    |
    |
    |
------------
+===========
 """, """
    ______
    |    |
@@ -158,7 +156,7 @@ public class Main {
    |
    |
    |
------------
+===========
 """, """
    ______
    |    |
@@ -166,7 +164,7 @@ public class Main {
    |    |
    |
    |
------------
+===========
 """, """
    ______
    |    |
@@ -174,7 +172,7 @@ public class Main {
    |   /|
    |
    |
------------
+===========
 """, """
    ______
    |    |
@@ -182,7 +180,7 @@ public class Main {
    |   /|\\
    |
    |
------------
+===========
 """, """
    ______
    |    |
@@ -190,7 +188,7 @@ public class Main {
    |   /|\\
    |   /
    |
------------
+===========
 """, """
    ______
    |    |
@@ -198,7 +196,7 @@ public class Main {
    |   /|\\
    |   / \\
    |
------------
+===========
 """};
         System.out.println(hangmanStages[mistakes]);
     }

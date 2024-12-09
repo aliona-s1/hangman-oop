@@ -95,15 +95,20 @@ public class Main {
             String letter = SCANNER.nextLine().toLowerCase();
 
             if (letter.length() != 1) {
-                System.out.println("Введите одну букву.");
-            } else if (letter.matches("[а-яА-ЯЁё]")) {
-                if (!inputtedLetters.contains(letter)) {
-                    return letter;
-                }
-                System.out.println("\nЭта буква уже вводилась! Попробуйте другую.");
-            } else {
-                System.out.println("\nВведите букву русского алфавита.");
+                System.out.println("\nВведите одну букву.");
+                continue;
             }
+
+            if (!letter.matches("[а-яА-ЯЁё]")) {
+                System.out.println("\nВведите букву русского алфавита.");
+                continue;
+            }
+
+            if (inputtedLetters.contains(letter)) {
+                System.out.println("\nЭта буква уже вводилась! Попробуйте другую.");
+                continue;
+            }
+            return letter;
         }
     }
 

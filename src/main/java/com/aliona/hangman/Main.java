@@ -15,7 +15,20 @@ public class Main {
 
     public static void main(String[] args) {
         initializeDictionary();
-        startMenu();
+        while (true) {
+            System.out.printf("\nХотите начать игру?\n%s - начать | %s - выйти\n", START, EXIT);
+            String letter = SCANNER.nextLine().trim().toLowerCase();
+
+            if (letter.equals(START)) {
+                startGame();
+            } else if (letter.equals(EXIT)) {
+                System.out.println("\nВы вышли из игры.");
+                SCANNER.close();
+                break;
+            } else {
+                System.out.println("\nНекорректный ввод.");
+            }
+        }
     }
 
     private static void initializeDictionary() {
@@ -30,28 +43,10 @@ public class Main {
             }
 
             if (WORDS.isEmpty()) {
-                throw new RuntimeException("\nСловарь пуст.");
+                throw new RuntimeException("Словарь пуст.");
             }
         } catch (NullPointerException | IOException e) {
             throw new RuntimeException("Файл не найден.");
-        }
-    }
-
-    private static void startMenu() {
-        while (true) {
-            System.out.printf("\nХотите сыграть?\n%s - начать игру\n%s - выйти из приложения\n", START, EXIT);
-            System.out.print("\nВаш выбор: ");
-            String letter = SCANNER.nextLine().trim().toLowerCase();
-
-            if (letter.equals(START)) {
-                startGame();
-            } else if (letter.equals(EXIT)) {
-                System.out.println("\nВы вышли из приложения.");
-                SCANNER.close();
-                break;
-            } else {
-                System.out.println("\nНекорректный ввод.");
-            }
         }
     }
 
@@ -79,14 +74,14 @@ public class Main {
             inputtedLetters.add(letter);
 
             if (isWin(word, maskedWord)) {
-                System.out.println("\nПоздравляем! Вы угадали слово: " + word);
+                System.out.println("\nПоздравляем! Вы угадали слово: " + word + "\n");
                 return;
             }
             showGameState(mistakes, inputtedLetters);
         }
 
         if (isLoss(mistakes)) {
-            System.out.println("\nВы проиграли! Загаданное слово: " + word);
+            System.out.println("\nВы проиграли! Загаданное слово: " + word + "\n");
         }
     }
 

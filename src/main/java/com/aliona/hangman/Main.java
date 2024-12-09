@@ -14,12 +14,16 @@ public class Main {
     private static final String MASKING_SYMBOL = "*";
 
     public static void main(String[] args) {
-        initializeDictionary();
+        startMenu();
+    }
+
+    private static void startMenu() {
         while (true) {
             System.out.printf("\nХотите начать игру?\n%s - начать | %s - выйти\n", START, EXIT);
             String letter = SCANNER.nextLine().trim().toLowerCase();
 
             if (letter.equals(START)) {
+                initializeDictionary();
                 startGame();
             } else if (letter.equals(EXIT)) {
                 System.out.println("\nВы вышли из игры.");
@@ -32,6 +36,11 @@ public class Main {
     }
 
     private static void initializeDictionary() {
+
+        if (!WORDS.isEmpty()) {
+            return;
+        }
+
         try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("dictionary.txt");
              Scanner scanner = new Scanner(inputStream)) {
 

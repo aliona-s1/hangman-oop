@@ -18,8 +18,9 @@ public class Main {
     }
 
     private static void startMenu() {
+        System.out.print("\nХотите начать игру?");
         while (true) {
-            System.out.printf("\nХотите начать игру?\n%s - начать | %s - выйти\n", START, EXIT);
+            System.out.printf("%n%s - начать | %s - выйти%n", START, EXIT);
             String letter = SCANNER.nextLine().trim().toLowerCase();
 
             if (letter.equals(START)) {
@@ -151,7 +152,7 @@ public class Main {
     private static void showGameState(int mistakes, List<String> inputtedLetters) {
         printHangman(mistakes);
         System.out.printf("Ошибок: %s из %s", mistakes, MAX_MISTAKES);
-        System.out.println("Введенные буквы: " + String.join(",", inputtedLetters));
+        System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
     }
 
     private static boolean isWin(String word, String maskedWord) {

@@ -85,7 +85,6 @@ public class Main {
                 maskedWord = updateMaskedWord(word, maskedWord, letter);
             }
 
-            maskedWord = updateMaskedWord(word, maskedWord, letter);
             inputtedLetters.add(letter);
 
             if (isWin(word, maskedWord)) {

@@ -100,7 +100,7 @@ public class Main {
     }
 
     private static void showMaskedWord(String maskedWord) {
-        System.out.println(maskedWord);
+        System.out.println("\n" + maskedWord);
     }
 
     private static String inputValidLetter(List<String> inputtedLetters) {
@@ -146,6 +146,24 @@ public class Main {
             }
         }
         return updatedMaskedWord.toString();
+    }
+
+    private static void showGameState(int mistakes, List<String> inputtedLetters) {
+        printHangman(mistakes);
+        System.out.printf("Ошибок: %s из %s", mistakes, MAX_MISTAKES);
+        System.out.println("Введенные буквы: " + String.join(",", inputtedLetters));
+    }
+
+    private static boolean isWin(String word, String maskedWord) {
+        return maskedWord.equals(word);
+    }
+
+    private static boolean isLoss(int mistakes) {
+        return mistakes == MAX_MISTAKES;
+    }
+
+    private static boolean isGameFinished(String maskedWord, int mistakes, String word) {
+        return isLoss(mistakes) || isWin(word, maskedWord);
     }
 
     private static void printHangman(int mistakes) {
@@ -208,23 +226,5 @@ public class Main {
 ===========
 """};
         System.out.println(hangmanStages[mistakes]);
-    }
-
-    private static void showGameState(int mistakes, List<String> inputtedLetters) {
-        printHangman(mistakes);
-        System.out.println("Ошибок: " + mistakes + " из " + MAX_MISTAKES);
-        System.out.println("Введенные буквы: " + String.join(",", inputtedLetters) + "\n");
-    }
-
-    private static boolean isWin(String word, String maskedWord) {
-        return maskedWord.equals(word);
-    }
-
-    private static boolean isLoss(int mistakes) {
-        return mistakes == MAX_MISTAKES;
-    }
-
-    private static boolean isGameFinished(String maskedWord, int mistakes, String word) {
-        return isLoss(mistakes) || isWin(word, maskedWord);
     }
 }

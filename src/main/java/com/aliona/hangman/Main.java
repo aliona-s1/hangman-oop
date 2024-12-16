@@ -78,7 +78,11 @@ public class Main {
 
             String letter = inputValidLetter(inputtedLetters);
 
-            mistakes = updateMistakes(word, letter, mistakes);
+            if (isLetterAbsent(word, letter)) {
+                System.out.println("\nТакой буквы в слове нет!");
+                mistakes = updateMistakes(mistakes);
+            }
+
             maskedWord = updateMaskedWord(word, maskedWord, letter);
             inputtedLetters.add(letter);
 
@@ -121,11 +125,12 @@ public class Main {
         }
     }
 
-    private static int updateMistakes(String word, String letter, int mistakes) {
-        if (!word.contains(letter)) {
-            mistakes++;
-            System.out.println("\nТакой буквы в слове нет!");
-        }
+    private static boolean isLetterAbsent(String word, String letter) {
+        return (!word.contains(letter));
+    }
+
+    private static int updateMistakes(int mistakes) {
+        mistakes++;
         return mistakes;
     }
 

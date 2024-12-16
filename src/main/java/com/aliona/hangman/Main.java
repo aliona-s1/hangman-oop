@@ -81,6 +81,8 @@ public class Main {
             if (isLetterAbsent(word, letter)) {
                 System.out.println("\nТакой буквы в слове нет!");
                 mistakes = updateMistakes(mistakes);
+            } else {
+                maskedWord = updateMaskedWord(word, maskedWord, letter);
             }
 
             maskedWord = updateMaskedWord(word, maskedWord, letter);

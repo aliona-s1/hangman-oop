@@ -128,8 +128,6 @@ public class Main {
         }
     }
 
-    private static boolean isLetterAbsent(String word, String letter) {
-        return (!word.contains(letter));
     private static boolean isLetterInWord(String word, String letter) {
         return word.contains(letter);
     }

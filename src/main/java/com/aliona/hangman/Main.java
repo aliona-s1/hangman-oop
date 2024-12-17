@@ -8,8 +8,8 @@ public class Main {
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final Random RANDOM = new Random();
     private static final List<String> WORDS = new ArrayList<>();
-    private static final String START = "да";
-    private static final String EXIT = "нет";
+    private static final String START = "Y";
+    private static final String EXIT = "N";
     private static final int MAX_MISTAKES = 6;
     private static final String MASKING_SYMBOL = "*";
 
@@ -18,20 +18,21 @@ public class Main {
     }
 
     private static void startMenu() {
+        System.out.printf("Хотите начать игру? %s/%s%n", START, EXIT);
 
         while (true) {
-            System.out.println("\nХотите сыграть? да/нет");
-            String letter = SCANNER.nextLine().trim().toLowerCase();
+            String letter = SCANNER.nextLine().trim().toUpperCase();
 
             if (letter.equals(START)) {
                 initializeDictionary();
                 startGame();
+                System.out.printf("Хотите сыграть еще раз? %s/%s%n", START, EXIT);
             } else if (letter.equals(EXIT)) {
                 System.out.println("Вы вышли из игры.");
                 SCANNER.close();
                 break;
             } else {
-                System.out.println("Введите да или нет.");
+                System.out.printf("Некорректный ввод. Для начала игры - %s, для выхода - %s.%n", START, EXIT);
             }
         }
     }
@@ -46,7 +47,6 @@ public class Main {
 
             while (scanner.hasNextLine()) {
                 String word = scanner.nextLine().trim();
-
                 if (!word.isEmpty()) {
                     WORDS.add(word);
                 }
@@ -72,12 +72,10 @@ public class Main {
     private static void startGameLoop(String word, String maskedWord) {
         int mistakes = 0;
         List<String> inputtedLetters = new ArrayList<>();
-
-        printHangman(0);
+        printHangman(mistakes);
 
         while (!isGameFinished(maskedWord, mistakes, word)) {
             showMaskedWord(maskedWord);
-
             String letter = inputValidLetter(inputtedLetters);
 
             if (isLetterInWord(word, letter)) {
@@ -88,17 +86,16 @@ public class Main {
             }
 
             inputtedLetters.add(letter);
-
             showGameState(mistakes, inputtedLetters);
         }
 
         if (isWin(word, maskedWord)) {
-            System.out.println("Поздравляем! Вы угадали слово: " + word);
+            System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", word);
             return;
         }
 
         if (isLoss(mistakes)) {
-            System.out.println("Вы проиграли! Загаданное слово: " + word);
+            System.out.printf("Вы проиграли! Загаданное слово: %s%n%n", word);
         }
     }
 

@@ -76,9 +76,14 @@ public class Main {
 
         while (!isGameFinished(maskedWord, mistakes, word)) {
             showMaskedWord(maskedWord);
-            String letter = inputValidLetter(inputtedLetters);
+            String letter = inputValidLetter();
 
-            if (isLetterInWord(word, letter)) {
+            if (inputtedLetters.contains(letter)) {
+                System.out.println("Эта буква уже вводилась! Попробуйте другую.");
+                continue;
+            }
+
+            if (word.contains(letter)) {
                 maskedWord = updateMaskedWord(word, maskedWord, letter);
             } else {
                 System.out.println("Такой буквы в слове нет!");
@@ -103,7 +108,7 @@ public class Main {
         System.out.println("\n" + maskedWord);
     }
 
-    private static String inputValidLetter(List<String> inputtedLetters) {
+    private static String inputValidLetter() {
         while (true) {
             String letter = SCANNER.nextLine().toLowerCase();
 
@@ -117,16 +122,8 @@ public class Main {
                 continue;
             }
 
-            if (inputtedLetters.contains(letter)) {
-                System.out.println("Эта буква уже вводилась! Попробуйте другую.");
-                continue;
-            }
             return letter;
         }
-    }
-
-    private static boolean isLetterInWord(String word, String letter) {
-        return word.contains(letter);
     }
 
     private static String updateMaskedWord(String word, String maskedWord, String letter) {

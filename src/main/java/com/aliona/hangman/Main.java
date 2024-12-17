@@ -18,9 +18,9 @@ public class Main {
     }
 
     private static void startMenu() {
-        System.out.println("\nХотите начать игру? да/нет");
 
         while (true) {
+            System.out.println("\nХотите сыграть? да/нет");
             String letter = SCANNER.nextLine().trim().toLowerCase();
 
             if (letter.equals(START)) {
@@ -73,8 +73,9 @@ public class Main {
         int mistakes = 0;
         List<String> inputtedLetters = new ArrayList<>();
 
+        printHangman(0);
+
         while (!isGameFinished(maskedWord, mistakes, word)) {
-            showGameState(mistakes, inputtedLetters);
             showMaskedWord(maskedWord);
 
             String letter = inputValidLetter(inputtedLetters);
@@ -88,14 +89,16 @@ public class Main {
 
             inputtedLetters.add(letter);
 
-            if (isWin(word, maskedWord)) {
-                System.out.println("Поздравляем! Вы угадали слово: " + word + "\n");
-                return;
-            }
+            showGameState(mistakes, inputtedLetters);
+        }
+
+        if (isWin(word, maskedWord)) {
+            System.out.println("Поздравляем! Вы угадали слово: " + word);
+            return;
         }
 
         if (isLoss(mistakes)) {
-            System.out.println("Вы проиграли! Загаданное слово: " + word + "\n");
+            System.out.println("Вы проиграли! Загаданное слово: " + word);
         }
     }
 

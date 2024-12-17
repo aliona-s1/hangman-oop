@@ -82,7 +82,7 @@ public class Main {
 
             if (isLetterAbsent(word, letter)) {
                 System.out.println("Такой буквы в слове нет!");
-                mistakes = updateMistakes(mistakes);
+                mistakes++;
             } else {
                 maskedWord = updateMaskedWord(word, maskedWord, letter);
             }
@@ -130,11 +130,6 @@ public class Main {
 
     private static boolean isLetterAbsent(String word, String letter) {
         return (!word.contains(letter));
-    }
-
-    private static int updateMistakes(int mistakes) {
-        mistakes++;
-        return mistakes;
     }
 
     private static String updateMaskedWord(String word, String maskedWord, String letter) {

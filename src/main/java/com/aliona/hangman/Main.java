@@ -8,10 +8,68 @@ public class Main {
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final Random RANDOM = new Random();
     private static final List<String> WORDS = new ArrayList<>();
+    private static final int MAX_MISTAKES = 6;
     private static final String START = "Y";
     private static final String EXIT = "N";
-    private static final int MAX_MISTAKES = 6;
     private static final String MASKING_SYMBOL = "*";
+    private static final String[] hangmanStages =
+            {"""
+   ______
+   |    |
+   |
+   |
+   |
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |
+   |
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |    |
+   |
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |   /|
+   |
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |   /
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |   / \\
+   |
+===========
+"""};
 
     public static void main(String[] args) {
         startMenu();
@@ -158,64 +216,6 @@ public class Main {
     }
 
     private static void printHangman(int mistakes) {
-        String[] hangmanStages =
-                {"""
-   ______
-   |    |
-   |
-   |
-   |
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |
-   |
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |    |
-   |
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |   /|
-   |
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |   /|\\
-   |
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |   /|\\
-   |   /
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |   /|\\
-   |   / \\
-   |
-===========
-"""};
         System.out.print(hangmanStages[mistakes]);
     }
 }

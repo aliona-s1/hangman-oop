@@ -1,13 +1,9 @@
 package com.aliona.hangman;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 public class Main {
     private static final Scanner SCANNER = new Scanner(System.in);
-    private static final Random RANDOM = new Random();
-    private static final List<String> WORDS = new ArrayList<>();
     private static final int MAX_MISTAKES = 6;
     private static final String START = "Y";
     private static final String EXIT = "N";
@@ -72,18 +68,18 @@ public class Main {
 """};
 
     public static void main(String[] args) {
-        startMenu();
+        Dictionary dictionary = new Dictionary();
+        startMenu(dictionary);
     }
 
-    private static void startMenu() {
+    private static void startMenu(Dictionary dictionary) {
         System.out.printf("Хотите начать игру? %s/%s%n", START, EXIT);
 
         while (true) {
             String letter = SCANNER.nextLine().trim().toUpperCase();
 
             if (letter.equals(START)) {
-                initializeDictionary();
-                startGame();
+                startGame(dictionary);
                 System.out.printf("Хотите сыграть еще раз? %s/%s%n", START, EXIT);
             } else if (letter.equals(EXIT)) {
                 System.out.println("Вы вышли из игры.");
@@ -95,33 +91,10 @@ public class Main {
         }
     }
 
-    private static void initializeDictionary() {
-        if (!WORDS.isEmpty()) {
-            return;
-        }
-
-        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("dictionary.txt");
-             Scanner scanner = new Scanner(inputStream)) {
-
-            while (scanner.hasNextLine()) {
-                String word = scanner.nextLine().trim();
-                if (!word.isEmpty()) {
-                    WORDS.add(word);
-                }
-            }
-
-            if (WORDS.isEmpty()) {
-                throw new RuntimeException("Словарь пуст.");
-            }
-        } catch (NullPointerException | IOException e) {
-            throw new RuntimeException("Файл не найден.");
-        }
-    }
-
-    private static void startGame() {
+    private static void startGame(Dictionary dictionary) {
         System.out.println("\nНачинаем игру!");
 
-        String word = WORDS.get(RANDOM.nextInt(WORDS.size()));
+        String word = dictionary.getRandomWord();
         String maskedWord = MASKING_SYMBOL.repeat(word.length());
 
         startGameLoop(word, maskedWord);

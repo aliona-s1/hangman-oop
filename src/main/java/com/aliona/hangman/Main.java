@@ -7,7 +7,6 @@ public class Main {
     private static final int MAX_MISTAKES = 6;
     private static final String START = "Y";
     private static final String EXIT = "N";
-    private static final String MASKING_SYMBOL = "*";
     private static final String[] hangmanStages =
             {"""
    ______
@@ -94,19 +93,18 @@ public class Main {
     private static void startGame(Dictionary dictionary) {
         System.out.println("\nНачинаем игру!");
 
-        String word = dictionary.getRandomWord();
-        String maskedWord = MASKING_SYMBOL.repeat(word.length());
+        SecretWord secretWord = new SecretWord(dictionary);
 
-        startGameLoop(word, maskedWord);
+        startGameLoop(secretWord);
     }
 
-    private static void startGameLoop(String word, String maskedWord) {
+    private static void startGameLoop(SecretWord secretWord) {
         int mistakes = 0;
         List<String> inputtedLetters = new ArrayList<>();
         printHangman(mistakes);
 
-        while (!isGameFinished(maskedWord, mistakes, word)) {
-            showMaskedWord(maskedWord);
+        while (!isGameFinished(mistakes, secretWord)) {
+            secretWord.showMaskedWord();
             String letter = inputValidLetter();
 
             if (inputtedLetters.contains(letter)) {
@@ -114,8 +112,8 @@ public class Main {
                 continue;
             }
 
-            if (word.contains(letter)) {
-                maskedWord = updateMaskedWord(word, maskedWord, letter);
+            if (secretWord.isLetterInWord(letter)) {
+                secretWord.updateMaskedWord(letter);
             } else {
                 System.out.println("Такой буквы в слове нет!");
                 mistakes++;
@@ -125,18 +123,14 @@ public class Main {
             showGameState(mistakes, inputtedLetters);
         }
 
-        if (isWin(word, maskedWord)) {
-            System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", word);
+        if (isWin(secretWord)) {
+            System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", secretWord.getWord());
             return;
         }
 
         if (isLoss(mistakes)) {
-            System.out.printf("Вы проиграли! Загаданное слово: %s%n%n", word);
+            System.out.printf("Вы проиграли! Загаданное слово: %s%n%n", secretWord.getWord());
         }
-    }
-
-    private static void showMaskedWord(String maskedWord) {
-        System.out.println("\n" + maskedWord);
     }
 
     private static String inputValidLetter() {
@@ -157,35 +151,22 @@ public class Main {
         }
     }
 
-    private static String updateMaskedWord(String word, String maskedWord, String letter) {
-        StringBuilder updatedMaskedWord = new StringBuilder(maskedWord);
-
-        for (int i = 0; i < word.length(); i++) {
-            String currentLetter = word.substring(i, i + 1);
-
-            if (currentLetter.equals(letter)) {
-                updatedMaskedWord.replace(i, i + 1, currentLetter);
-            }
-        }
-        return updatedMaskedWord.toString();
-    }
-
     private static void showGameState(int mistakes, List<String> inputtedLetters) {
         printHangman(mistakes);
         System.out.printf("Ошибок: %s из %s", mistakes, MAX_MISTAKES);
         System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
     }
 
-    private static boolean isWin(String word, String maskedWord) {
-        return maskedWord.equals(word);
+    private static boolean isWin(SecretWord secretWord) {
+        return secretWord.getMaskedWord().equals(secretWord.getWord());
     }
 
     private static boolean isLoss(int mistakes) {
         return mistakes == MAX_MISTAKES;
     }
 
-    private static boolean isGameFinished(String maskedWord, int mistakes, String word) {
-        return isLoss(mistakes) || isWin(word, maskedWord);
+    private static boolean isGameFinished(int mistakes, SecretWord secretWord) {
+        return isLoss(mistakes) || isWin(secretWord);
     }
 
     private static void printHangman(int mistakes) {

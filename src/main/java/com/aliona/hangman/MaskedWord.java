@@ -10,7 +10,7 @@ public class MaskedWord {
         this.mask = MASKING_SYMBOL.repeat(secretWord.length());
     }
 
-    public String getWord() {
+    public String getSecretWord() {
         return secretWord;
     }
 

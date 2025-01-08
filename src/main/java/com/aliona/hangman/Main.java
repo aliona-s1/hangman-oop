@@ -124,12 +124,12 @@ public class Main {
         }
 
         if (isWin(maskedWord)) {
-            System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", maskedWord.getWord());
+            System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", maskedWord.getSecretWord());
             return;
         }
 
         if (isLoss(mistakes)) {
-            System.out.printf("Вы проиграли! Загаданное слово: %s%n%n", maskedWord.getWord());
+            System.out.printf("Вы проиграли! Загаданное слово: %s%n%n", maskedWord.getSecretWord());
         }
     }
 
@@ -162,7 +162,7 @@ public class Main {
     }
 
     private static boolean isWin(MaskedWord maskedWord) {
-        return maskedWord.getMask().equals(maskedWord.getWord());
+        return maskedWord.getMask().equals(maskedWord.getSecretWord());
     }
 
     private static boolean isLoss(int mistakes) {

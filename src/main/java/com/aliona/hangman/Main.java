@@ -93,18 +93,18 @@ public class Main {
     private static void startGame(Dictionary dictionary) {
         System.out.println("\nНачинаем игру!");
 
-        SecretWord secretWord = new SecretWord(dictionary);
+        MaskedWord maskedWord = new MaskedWord(dictionary);
 
-        startGameLoop(secretWord);
+        startGameLoop(maskedWord);
     }
 
-    private static void startGameLoop(SecretWord secretWord) {
+    private static void startGameLoop(MaskedWord maskedWord) {
         int mistakes = 0;
         List<String> inputtedLetters = new ArrayList<>();
         printHangman(mistakes);
 
-        while (!isGameFinished(mistakes, secretWord)) {
-            secretWord.showMaskedWord();
+        while (!isGameFinished(mistakes, maskedWord)) {
+            printMask(maskedWord.getMask());
             String letter = inputValidLetter();
 
             if (inputtedLetters.contains(letter)) {
@@ -112,8 +112,8 @@ public class Main {
                 continue;
             }
 
-            if (secretWord.isLetterInWord(letter)) {
-                secretWord.updateMaskedWord(letter);
+            if (maskedWord.isLetterInWord(letter)) {
+                maskedWord.updateMask(letter);
             } else {
                 System.out.println("Такой буквы в слове нет!");
                 mistakes++;
@@ -123,13 +123,13 @@ public class Main {
             showGameState(mistakes, inputtedLetters);
         }
 
-        if (isWin(secretWord)) {
-            System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", secretWord.getWord());
+        if (isWin(maskedWord)) {
+            System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", maskedWord.getWord());
             return;
         }
 
         if (isLoss(mistakes)) {
-            System.out.printf("Вы проиграли! Загаданное слово: %s%n%n", secretWord.getWord());
+            System.out.printf("Вы проиграли! Загаданное слово: %s%n%n", maskedWord.getWord());
         }
     }
 
@@ -157,16 +157,16 @@ public class Main {
         System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
     }
 
-    private static boolean isWin(SecretWord secretWord) {
-        return secretWord.getMaskedWord().equals(secretWord.getWord());
+    private static boolean isWin(MaskedWord maskedWord) {
+        return maskedWord.getMask().equals(maskedWord.getWord());
     }
 
     private static boolean isLoss(int mistakes) {
         return mistakes == MAX_MISTAKES;
     }
 
-    private static boolean isGameFinished(int mistakes, SecretWord secretWord) {
-        return isLoss(mistakes) || isWin(secretWord);
+    private static boolean isGameFinished(int mistakes, MaskedWord maskedWord) {
+        return isLoss(mistakes) || isWin(maskedWord);
     }
 
     private static void printHangman(int mistakes) {

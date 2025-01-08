@@ -133,6 +133,10 @@ public class Main {
         }
     }
 
+    private static void printMask(String mask) {
+        System.out.println(mask);
+    }
+
     private static String inputValidLetter() {
         while (true) {
             String letter = SCANNER.nextLine().toLowerCase();

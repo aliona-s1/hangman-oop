@@ -25,8 +25,6 @@ public class MaskedWord {
     public void updateMask(String letter) {
         StringBuilder updatedMask = new StringBuilder(mask);
 
-        for (int i = 0; i < word.length(); i++) {
-            String currentLetter = word.substring(i, i + 1);
         for (int i = 0; i < secretWord.length(); i++) {
             String currentLetter = secretWord.substring(i, i + 1);
 

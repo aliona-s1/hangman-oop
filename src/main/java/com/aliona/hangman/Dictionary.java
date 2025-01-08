@@ -16,6 +16,10 @@ public class Dictionary {
         initializeDictionary();
     }
 
+    public String getRandomWord() {
+        return words.get(RANDOM.nextInt(words.size()));
+    }
+
     private void initializeDictionary() {
         try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream(DICTIONARY_PATH);
              Scanner scanner = new Scanner(inputStream)) {
@@ -33,9 +37,5 @@ public class Dictionary {
         } catch (NullPointerException | IOException e) {
             throw new RuntimeException("Файл не найден.");
         }
-    }
-
-    public String getRandomWord() {
-        return words.get(RANDOM.nextInt(words.size()));
     }
 }

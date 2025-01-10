@@ -101,10 +101,13 @@ public class Main {
     private static void startGameLoop(MaskedWord maskedWord) {
         int mistakes = 0;
         List<String> inputtedLetters = new ArrayList<>();
-        printHangman(mistakes);
+
+        Renderer renderer = new Renderer(hangmanStages);
+        renderer.printHangman(mistakes);
 
         while (!isGameFinished(mistakes, maskedWord)) {
-            printMask(maskedWord.getMask());
+            String mask = maskedWord.getMask();
+            renderer.printMask(mask);
             String letter = inputValidLetter();
 
             if (inputtedLetters.contains(letter)) {
@@ -120,10 +123,11 @@ public class Main {
             }
 
             inputtedLetters.add(letter);
-            showGameState(mistakes, inputtedLetters);
+            renderer.printHangman(mistakes);
+            renderer.showGameInfo(mistakes, MAX_MISTAKES, inputtedLetters);
         }
 
-        if (isWin(maskedWord)) {
+        if (maskedWord.isSecretWordGuessed()) {
             System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", maskedWord.getSecretWord());
             return;
         }
@@ -131,10 +135,6 @@ public class Main {
         if (isLoss(mistakes)) {
             System.out.printf("Вы проиграли! Загаданное слово: %s%n%n", maskedWord.getSecretWord());
         }
-    }
-
-    private static void printMask(String mask) {
-        System.out.println(mask);
     }
 
     private static String inputValidLetter() {
@@ -155,25 +155,11 @@ public class Main {
         }
     }
 
-    private static void showGameState(int mistakes, List<String> inputtedLetters) {
-        printHangman(mistakes);
-        System.out.printf("Ошибок: %s из %s", mistakes, MAX_MISTAKES);
-        System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
-    }
-
-    private static boolean isWin(MaskedWord maskedWord) {
-        return maskedWord.getMask().equals(maskedWord.getSecretWord());
-    }
-
     private static boolean isLoss(int mistakes) {
         return mistakes == MAX_MISTAKES;
     }
 
     private static boolean isGameFinished(int mistakes, MaskedWord maskedWord) {
-        return isLoss(mistakes) || isWin(maskedWord);
-    }
-
-    private static void printHangman(int mistakes) {
-        System.out.print(hangmanStages[mistakes]);
+        return isLoss(mistakes) || maskedWord.isSecretWordGuessed();
     }
 }

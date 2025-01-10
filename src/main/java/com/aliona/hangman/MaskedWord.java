@@ -34,4 +34,8 @@ public class MaskedWord {
         }
         this.mask = updatedMask.toString();
     }
+
+    public boolean isSecretWordGuessed() {
+        return mask.equals(secretWord);
+    }
 }

@@ -3,11 +3,64 @@ package com.aliona.hangman;
 import java.util.List;
 
 public class Renderer {
-    private final String[] hangmanStages;
-
-    public Renderer(String[] hangmanStages) {
-        this.hangmanStages = hangmanStages;
-    }
+    private static final String[] hangmanStages =
+            {"""
+   ______
+   |    |
+   |
+   |
+   |
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |
+   |
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |    |
+   |
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |   /|
+   |
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |   /
+   |
+===========
+""", """
+   ______
+   |    |
+   |    0
+   |   /|\\
+   |   / \\
+   |
+===========
+"""};
 
     public void printHangman(int mistakes) {
         System.out.print(hangmanStages[Math.min(mistakes, hangmanStages.length - 1)]);
@@ -18,7 +71,7 @@ public class Renderer {
     }
 
     public void showStartMessage() {
-        System.out.println("Начинаем игру!");
+        System.out.println("\nНачинаем игру!");
     }
 
     public void showGameInfo(int mistakes, int MAX_MISTAKES, List<String> inputtedLetters) {

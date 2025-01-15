@@ -3,67 +3,6 @@ package com.aliona.hangman;
 import java.util.*;
 
 public class Main {
-    private static final Scanner SCANNER = new Scanner(System.in);
-    private static final String START = "Y";
-    private static final String EXIT = "N";
-    private static final String[] hangmanStages =
-            {"""
-   ______
-   |    |
-   |
-   |
-   |
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |
-   |
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |    |
-   |
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |   /|
-   |
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |   /|\\
-   |
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |   /|\\
-   |   /
-   |
-===========
-""", """
-   ______
-   |    |
-   |    0
-   |   /|\\
-   |   / \\
-   |
-===========
-"""};
 
     public static void main(String[] args) {
         Dictionary dictionary = new Dictionary();

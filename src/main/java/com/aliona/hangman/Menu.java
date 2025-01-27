@@ -6,9 +6,11 @@ public class Menu {
     private static final String START = "Y";
     private static final String EXIT = "N";
     private final Scanner scanner;
+    private final Renderer renderer;
 
-    public Menu(Scanner scanner) {
+    public Menu(Scanner scanner, Renderer renderer) {
         this.scanner = scanner;
+        this.renderer = renderer;
     }
 
     public void startMenu(Dictionary dictionary) {
@@ -18,7 +20,7 @@ public class Menu {
             String letter = scanner.nextLine().trim().toUpperCase();
 
             if (letter.equals(START)) {
-                Game game = new Game(dictionary, new Renderer());
+                Game game = new Game(dictionary, renderer, scanner);
                 game.startGame();
                 System.out.printf("Хотите сыграть еще раз? %s/%s%n", START, EXIT);
             } else if (letter.equals(EXIT)) {

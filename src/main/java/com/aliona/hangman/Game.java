@@ -9,15 +9,13 @@ public class Game {
 
     private final MaskedWord maskedWord;
     private final Renderer renderer;
-    private final Scanner scanner;
+    private final List<String> inputtedLetters = new ArrayList<>();
 
     private int mistakes = 0;
-    private List<String> inputtedLetters = new ArrayList<>();
 
-    public Game(MaskedWord maskedWord, Renderer renderer) {
-        this.maskedWord = maskedWord;
+    public Game(Dictionary dictionary, Renderer renderer) {
+        this.maskedWord = new MaskedWord(dictionary.getRandomWord());
         this.renderer = renderer;
-        this.scanner = new Scanner(System.in);
     }
 
     public void startGame() {
@@ -52,6 +50,7 @@ public class Game {
     }
 
     public String inputValidLetter() {
+        Scanner scanner = new Scanner(System.in);
 
         while (true) {
             String letter = scanner.nextLine().toLowerCase();

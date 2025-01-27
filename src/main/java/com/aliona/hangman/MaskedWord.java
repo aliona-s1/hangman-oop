@@ -5,8 +5,8 @@ public class MaskedWord {
     private final String secretWord;
     private String mask;
 
-    public MaskedWord(Dictionary dictionary) {
-        this.secretWord = dictionary.getRandomWord();
+    public MaskedWord(String secretWord) {
+        this.secretWord = secretWord;
         this.mask = MASKING_SYMBOL.repeat(secretWord.length());
     }
 

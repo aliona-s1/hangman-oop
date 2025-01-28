@@ -70,10 +70,6 @@ public class Renderer {
         System.out.println(maskedWord.getMask());
     }
 
-    public void showStartMessage() {
-        System.out.println("\nНачинаем игру!");
-    }
-
     public void showGameInfo(int mistakes, int MAX_MISTAKES, List<String> inputtedLetters) {
         System.out.printf("Ошибок: %s из %s", mistakes, MAX_MISTAKES);
         System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));

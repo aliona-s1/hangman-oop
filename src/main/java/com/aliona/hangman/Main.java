@@ -22,7 +22,7 @@ public class Main {
 
             if (letter.equals(START)) {
                 Game game = new Game(dictionary, renderer);
-                game.start(renderer);
+                game.start();
                 System.out.printf("Хотите сыграть еще раз? %s/%s%n", START, EXIT);
             } else if (letter.equals(EXIT)) {
                 System.out.println("Вы вышли из игры.");

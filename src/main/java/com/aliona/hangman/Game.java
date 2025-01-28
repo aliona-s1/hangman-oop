@@ -10,25 +10,26 @@ public class Game {
 
     private final MaskedWord maskedWord;
     private final Renderer renderer;
+    private final List<String> inputtedLetters = new ArrayList<>();
+
+    private int mistakes = 0;
 
     public Game(Dictionary dictionary, Renderer renderer) {
         this.maskedWord = new MaskedWord(dictionary.getRandomWord());
         this.renderer = renderer;
     }
 
-    public void start(Renderer renderer) {
+    public void start() {
         System.out.println("\nНачинаем игру!");
 
-        startGameLoop(maskedWord, renderer);
+        runGameLoop();
     }
 
-    public static void startGameLoop(MaskedWord maskedWord, Renderer renderer) {
-        int mistakes = 0;
-        List<String> inputtedLetters = new ArrayList<>();
+    public void runGameLoop() {
 
         renderer.printHangman(mistakes);
 
-        while (!isGameFinished(mistakes, maskedWord)) {
+        while (!isGameFinished()) {
             renderer.printMask(maskedWord);
             String letter = inputValidLetter();
 
@@ -49,17 +50,10 @@ public class Game {
             renderer.showGameInfo(mistakes, MAX_MISTAKES, inputtedLetters);
         }
 
-        if (isWin(maskedWord)) {
-            renderer.showWinMessage(maskedWord);
-            return;
-        }
-
-        if (isLoss(mistakes)) {
-            renderer.showLossMessage(maskedWord);
-        }
+        displayResult();
     }
 
-    public static String inputValidLetter() {
+    public String inputValidLetter() {
         while (true) {
             String letter = scanner.nextLine().toLowerCase();
 
@@ -68,7 +62,7 @@ public class Game {
                 continue;
             }
 
-            if (!letter.matches("[а-яА-ЯЁё]")) {
+            if (!letter.matches("[а-яё]")) {
                 System.out.println("Введите букву русского алфавита.");
                 continue;
             }
@@ -77,15 +71,23 @@ public class Game {
         }
     }
 
-    private static boolean isWin(MaskedWord maskedWord) {
+    public boolean isWin() {
         return maskedWord.isSecretWordGuessed();
     }
 
-    private static boolean isLoss(int mistakes) {
+    public boolean isLoss() {
         return mistakes == MAX_MISTAKES;
     }
 
-    private static boolean isGameFinished(int mistakes, MaskedWord maskedWord) {
-        return isLoss(mistakes) || isWin(maskedWord);
+    public boolean isGameFinished() {
+        return isLoss() || isWin();
+    }
+
+    public void displayResult() {
+        if (isWin()) {
+            renderer.showWinMessage(maskedWord);
+        } else if (isLoss()) {
+            renderer.showLossMessage(maskedWord);
+        }
     }
 }

@@ -6,53 +6,60 @@ import java.util.Scanner;
 
 public class Game {
     private static final int MAX_MISTAKES = 6;
+    private static final Scanner scanner = new Scanner(System.in);
 
     private final MaskedWord maskedWord;
     private final Renderer renderer;
-    private final List<String> inputtedLetters = new ArrayList<>();
-    private final Scanner scanner;
 
-    private int mistakes = 0;
-
-    public Game(Dictionary dictionary, Renderer renderer, Scanner scanner) {
+    public Game(Dictionary dictionary, Renderer renderer) {
         this.maskedWord = new MaskedWord(dictionary.getRandomWord());
         this.renderer = renderer;
-        this.scanner = scanner;
     }
 
-    public void startGame() {
-        renderer.showStartMessage();
+    public void start(Renderer renderer) {
+        System.out.println("\nНачинаем игру!");
+
+        startGameLoop(maskedWord, renderer);
+    }
+
+    public static void startGameLoop(MaskedWord maskedWord, Renderer renderer) {
+        int mistakes = 0;
+        List<String> inputtedLetters = new ArrayList<>();
+
         renderer.printHangman(mistakes);
 
-        while (!isGameFinished()) {
-            playGame();
-        }
+        while (!isGameFinished(mistakes, maskedWord)) {
+            renderer.printMask(maskedWord);
+            String letter = inputValidLetter();
 
-        handleGameEnd();
-    }
+            if (inputtedLetters.contains(letter)) {
+                System.out.println("Эта буква уже вводилась! Попробуйте другую.");
+                continue;
+            }
 
-    public void playGame() {
-        renderer.printMask(maskedWord);
-        String letter = inputValidLetter();
+            if (maskedWord.isLetterInWord(letter)) {
+                maskedWord.updateMask(letter);
+            } else {
+                System.out.println("Такой буквы в слове нет!");
+                mistakes++;
+            }
 
-        if (inputtedLetters.contains(letter)) {
-            System.out.println("Эта буква уже вводилась! Попробуйте другую.");
-        }
-
-        if (maskedWord.isLetterInWord(letter)) {
-            maskedWord.updateMask(letter);
-        } else {
-            System.out.println("Такой буквы в слове нет!");
-            mistakes++;
+            inputtedLetters.add(letter);
             renderer.printHangman(mistakes);
+            renderer.showGameInfo(mistakes, MAX_MISTAKES, inputtedLetters);
         }
 
-        inputtedLetters.add(letter);
-        renderer.showGameInfo(mistakes, MAX_MISTAKES, inputtedLetters);
+        if (isWin(maskedWord)) {
+            renderer.showWinMessage(maskedWord);
+            return;
+        }
+
+        if (isLoss(mistakes)) {
+            renderer.showLossMessage(maskedWord);
+        }
     }
 
-    public String inputValidLetter() {
-
+    public static String inputValidLetter() {
         while (true) {
             String letter = scanner.nextLine().toLowerCase();
 
@@ -70,16 +77,15 @@ public class Game {
         }
     }
 
-    public boolean isGameFinished() {
-        return mistakes == MAX_MISTAKES || maskedWord.isSecretWordGuessed();
+    private static boolean isWin(MaskedWord maskedWord) {
+        return maskedWord.isSecretWordGuessed();
     }
 
-    public void handleGameEnd() {
+    private static boolean isLoss(int mistakes) {
+        return mistakes == MAX_MISTAKES;
+    }
 
-        if (maskedWord.isSecretWordGuessed()) {
-            renderer.showWinMessage(maskedWord);
-        } else if (mistakes == MAX_MISTAKES) {
-            renderer.showLossMessage(maskedWord);
-        }
+    private static boolean isGameFinished(int mistakes, MaskedWord maskedWord) {
+        return isLoss(mistakes) || isWin(maskedWord);
     }
 }

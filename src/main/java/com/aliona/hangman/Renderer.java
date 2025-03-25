@@ -75,11 +75,11 @@ public class Renderer {
         System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
     }
 
-    public void showWinMessage(MaskedWord maskedWord) {
-        System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", maskedWord.getSecretWord());
-    }
-
-    public void showLossMessage(MaskedWord maskedWord) {
-        System.out.printf("Вы проиграли! Загаданное слово: %s%n%n", maskedWord.getSecretWord());
+    public void displayResult(boolean isWin, String secretWord) {
+        if (isWin) {
+            System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", secretWord);
+        } else {
+            System.out.printf("Вы проиграли! Загаданное слово: %s%n%n", secretWord);
+        }
     }
 }

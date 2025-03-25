@@ -66,8 +66,8 @@ public class Renderer {
         System.out.print(hangmanStages[Math.min(mistakes, hangmanStages.length - 1)]);
     }
 
-    public void printMask(MaskedWord maskedWord) {
-        System.out.println(maskedWord.getMask());
+    public void printMask(String mask) {
+        System.out.println(mask);
     }
 
     public void showGameInfo(int mistakes, int MAX_MISTAKES, List<String> inputtedLetters) {

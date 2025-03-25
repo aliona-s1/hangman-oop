@@ -29,7 +29,7 @@ public class Game {
         renderer.printHangman(mistakes);
 
         while (!isGameFinished()) {
-            renderer.printMask(maskedWord);
+            renderer.printMask(maskedWord.getMask());
             String letter = inputValidLetter();
 
             if (inputtedLetters.contains(letter)) {
@@ -49,7 +49,7 @@ public class Game {
             renderer.showGameInfo(mistakes, MAX_MISTAKES, inputtedLetters);
         }
 
-        displayResult();
+        renderer.displayResult(isWin(), maskedWord.getSecretWord());
     }
 
     private String inputValidLetter() {

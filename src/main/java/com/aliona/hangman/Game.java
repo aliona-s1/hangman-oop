@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Game {
     private static final int MAX_MISTAKES = 6;
-    private static final Scanner scanner = new Scanner(System.in);
+    private static final Scanner SCANNER = new Scanner(System.in);
 
     private final MaskedWord maskedWord;
     private final Renderer renderer;
@@ -54,7 +54,7 @@ public class Game {
 
     private String inputValidLetter() {
         while (true) {
-            String letter = scanner.nextLine().toLowerCase();
+            String letter = SCANNER.nextLine().toLowerCase();
 
             if (letter.length() != 1) {
                 System.out.println("Введите одну букву.");

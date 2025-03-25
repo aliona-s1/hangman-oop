@@ -25,8 +25,7 @@ public class Game {
         runGameLoop();
     }
 
-    public void runGameLoop() {
-
+    private void runGameLoop() {
         renderer.printHangman(mistakes);
 
         while (!isGameFinished()) {
@@ -53,7 +52,7 @@ public class Game {
         displayResult();
     }
 
-    public String inputValidLetter() {
+    private String inputValidLetter() {
         while (true) {
             String letter = scanner.nextLine().toLowerCase();
 
@@ -71,23 +70,11 @@ public class Game {
         }
     }
 
-    public boolean isWin() {
+    private boolean isWin() {
         return maskedWord.isSecretWordGuessed();
     }
 
-    public boolean isLoss() {
-        return mistakes == MAX_MISTAKES;
-    }
-
-    public boolean isGameFinished() {
-        return isLoss() || isWin();
-    }
-
-    public void displayResult() {
-        if (isWin()) {
-            renderer.showWinMessage(maskedWord);
-        } else if (isLoss()) {
-            renderer.showLossMessage(maskedWord);
-        }
+    private boolean isGameFinished() {
+        return mistakes == MAX_MISTAKES || isWin();
     }
 }

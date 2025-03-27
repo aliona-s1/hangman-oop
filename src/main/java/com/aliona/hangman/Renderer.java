@@ -62,16 +62,16 @@ public class Renderer {
 ===========
 """};
 
-    public void printHangman(int mistakes) {
-        System.out.print(hangmanStages[Math.min(mistakes, hangmanStages.length - 1)]);
+    public void printHangman(int mistakes) { // 7
+        System.out.println(HANGMAN_STAGES[mistakes]);
     }
 
     public void printMask(String mask) {
         System.out.println(mask);
     }
 
-    public void showGameInfo(int mistakes, int MAX_MISTAKES, List<String> inputtedLetters) {
-        System.out.printf("Ошибок: %s из %s", mistakes, MAX_MISTAKES);
+    public void showGameInfo(int mistakes, int maxMistakes, List<String> inputtedLetters) {
+        System.out.printf("Ошибок: %s из %s", mistakes, maxMistakes);
         System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
     }
 

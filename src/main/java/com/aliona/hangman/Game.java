@@ -14,8 +14,8 @@ public class Game {
 
     private int mistakes = 0;
 
-    public Game(Dictionary dictionary, Renderer renderer) {
-        this.maskedWord = new MaskedWord(dictionary.getRandomWord());
+    public Game(Renderer renderer, MaskedWord maskedWord) {
+        this.maskedWord = maskedWord;
         this.renderer = renderer;
     }
 

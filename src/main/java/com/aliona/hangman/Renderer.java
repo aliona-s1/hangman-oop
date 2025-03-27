@@ -3,7 +3,7 @@ package com.aliona.hangman;
 import java.util.List;
 
 public class Renderer {
-    private static final String[] hangmanStages =
+    private static final String[] HANGMAN_STAGES =
             {"""
    ______
    |    |

@@ -46,10 +46,10 @@ public class Game {
 
             inputtedLetters.add(letter);
             renderer.printHangman(mistakes);
-            renderer.showGameInfo(mistakes, MAX_MISTAKES, inputtedLetters);
+            renderer.printGameInfo(mistakes, MAX_MISTAKES, inputtedLetters);
         }
 
-        renderer.displayResult(isWin(), maskedWord.getSecretWord());
+        renderer.printResult(isWin(), maskedWord.getSecretWord());
     }
 
     private String inputValidLetter() {

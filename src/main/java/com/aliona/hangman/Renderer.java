@@ -70,12 +70,12 @@ public class Renderer {
         System.out.println(mask);
     }
 
-    public void showGameInfo(int mistakes, int maxMistakes, List<String> inputtedLetters) {
+    public void printGameInfo(int mistakes, int maxMistakes, List<String> inputtedLetters) {
         System.out.printf("Ошибок: %s из %s", mistakes, maxMistakes);
         System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
     }
 
-    public void displayResult(boolean isWin, String secretWord) {
+    public void printResult(boolean isWin, String secretWord) {
         if (isWin) {
             System.out.printf("Поздравляем! Вы угадали слово: %s%n%n", secretWord);
         } else {

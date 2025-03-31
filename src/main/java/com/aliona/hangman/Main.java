@@ -17,7 +17,7 @@ public class Main {
             String letter = scanner.nextLine().trim().toUpperCase();
 
             if (letter.equals(START)) {
-                Game game = new Game(renderer, new MaskedWord(dictionary.getRandomWord()));
+                Game game = new Game(renderer, new MaskedWord(dictionary.getRandomWord()), scanner);
                 game.start();
                 System.out.printf("Хотите сыграть еще раз? %s/%s%n", START, EXIT);
             } else if (letter.equals(EXIT)) {

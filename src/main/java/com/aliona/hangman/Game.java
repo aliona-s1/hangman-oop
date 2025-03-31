@@ -6,17 +6,18 @@ import java.util.Scanner;
 
 public class Game {
     private static final int MAX_MISTAKES = 6;
-    private static final Scanner SCANNER = new Scanner(System.in);
 
     private final MaskedWord maskedWord;
     private final Renderer renderer;
+    private final Scanner scanner;
     private final List<String> inputtedLetters = new ArrayList<>();
 
     private int mistakes = 0;
 
-    public Game(Renderer renderer, MaskedWord maskedWord) {
+    public Game(Renderer renderer, MaskedWord maskedWord, Scanner scanner) {
         this.maskedWord = maskedWord;
         this.renderer = renderer;
+        this.scanner = scanner;
     }
 
     public void start() {

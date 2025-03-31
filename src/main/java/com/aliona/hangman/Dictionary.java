@@ -10,19 +10,19 @@ import java.util.Scanner;
 public class Dictionary {
     private static final Random RANDOM = new Random();
     private final List<String> words = new ArrayList<>();
-    private final String dictionaryPath;
+    private final String path;
 
-    public Dictionary(String dictionaryPath) {
-        this.dictionaryPath = dictionaryPath;
-        initializeDictionary();
+    public Dictionary(String path) {
+        this.path = path;
+        initialize();
     }
 
     public String getRandomWord() {
         return words.get(RANDOM.nextInt(words.size()));
     }
 
-    private void initializeDictionary() {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(dictionaryPath);
+    private void initialize() {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path);
              Scanner scanner = new Scanner(inputStream)) {
 
             while (scanner.hasNextLine()) {

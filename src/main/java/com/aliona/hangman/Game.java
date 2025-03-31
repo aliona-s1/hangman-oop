@@ -28,7 +28,7 @@ public class Game {
     private void runGameLoop() {
         renderer.printHangman(mistakes);
 
-        while (!isGameFinished()) {
+        while (!isFinished()) {
             renderer.printMask(maskedWord.getMask());
             String letter = inputValidLetter().toLowerCase();
 
@@ -74,7 +74,7 @@ public class Game {
         return maskedWord.isSecretWordGuessed();
     }
 
-    private boolean isGameFinished() {
+    private boolean isFinished() {
         return mistakes == MAX_MISTAKES || isWin();
     }
 }

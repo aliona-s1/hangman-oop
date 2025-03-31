@@ -9,10 +9,11 @@ import java.util.Scanner;
 
 public class Dictionary {
     private static final Random RANDOM = new Random();
-    private static final String DICTIONARY_PATH = "dictionary.txt";
     private final List<String> words = new ArrayList<>();
+    private final String dictionaryPath;
 
-    public Dictionary() {
+    public Dictionary(String dictionaryPath) {
+        this.dictionaryPath = dictionaryPath;
         initializeDictionary();
     }
 
@@ -21,7 +22,7 @@ public class Dictionary {
     }
 
     private void initializeDictionary() {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(DICTIONARY_PATH);
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(dictionaryPath);
              Scanner scanner = new Scanner(inputStream)) {
 
             while (scanner.hasNextLine()) {

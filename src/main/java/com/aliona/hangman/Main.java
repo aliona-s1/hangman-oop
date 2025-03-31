@@ -7,7 +7,7 @@ public class Main {
     private static final String EXIT = "N";
 
     public static void main(String[] args) {
-        Dictionary dictionary = new Dictionary();
+        Dictionary dictionary = new Dictionary("dictionary.txt");
         Renderer renderer = new Renderer();
         Scanner scanner = new Scanner(System.in);
 

@@ -54,7 +54,7 @@ public class Game {
 
     private String inputValidLetter() {
         while (true) {
-            String letter = SCANNER.nextLine();
+            String letter = scanner.nextLine();
 
             if (letter.length() != 1) {
                 System.out.println("Введите одну букву.");

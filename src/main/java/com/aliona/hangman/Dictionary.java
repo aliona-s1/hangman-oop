@@ -21,7 +21,7 @@ public class Dictionary {
     }
 
     private void initializeDictionary() {
-        try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream(DICTIONARY_PATH);
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(DICTIONARY_PATH);
              Scanner scanner = new Scanner(inputStream)) {
 
             while (scanner.hasNextLine()) {

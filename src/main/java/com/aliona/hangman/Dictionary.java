@@ -33,10 +33,10 @@ public class Dictionary {
             }
 
             if (words.isEmpty()) {
-                throw new RuntimeException("The dictionary is empty.");
+                throw new RuntimeException("Словарь пуст.");
             }
         } catch (NullPointerException | IOException e) {
-            throw new RuntimeException("File is not found.");
+            throw new RuntimeException("Файл не найден.");
         }
     }
 }

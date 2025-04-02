@@ -49,7 +49,11 @@ public class Game {
             renderer.printGameInfo(mistakes, MAX_MISTAKES, inputtedLetters);
         }
 
-        renderer.printResult(isWin(), maskedWord.getSecretWord());
+        if (isWin()) {
+            renderer.printWin(maskedWord.getSecretWord());
+        } else {
+            renderer.printLoss(maskedWord.getSecretWord());
+        }
     }
 
     private String inputValidLetter() {

@@ -21,7 +21,7 @@ public class Game {
     }
 
     public void start() {
-        System.out.println("\nНачинаем игру!");
+        renderer.printStartMessage();
         runGameLoop();
     }
 
@@ -33,14 +33,14 @@ public class Game {
             String letter = inputValidLetter().toLowerCase();
 
             if (inputtedLetters.contains(letter)) {
-                System.out.println("Эта буква уже вводилась! Попробуйте другую.");
+                renderer.printLetterAlreadyUsed();
                 continue;
             }
 
             if (maskedWord.isLetterInWord(letter)) {
                 maskedWord.updateMask(letter);
             } else {
-                System.out.println("Такой буквы в слове нет!");
+                renderer.printLetterNotInWord();
                 mistakes++;
             }
 
@@ -61,12 +61,12 @@ public class Game {
             String letter = scanner.nextLine();
 
             if (letter.length() != 1) {
-                System.out.println("Введите одну букву.");
+                renderer.printEnterOneLetterPromt();
                 continue;
             }
 
             if (!letter.matches("[А-Яа-яёЁ]")) {
-                System.out.println("Введите букву русского алфавита.");
+                renderer.printRussianLetterPromt();
                 continue;
             }
 

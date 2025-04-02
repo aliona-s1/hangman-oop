@@ -62,6 +62,26 @@ public class Renderer {
 ===========
 """};
 
+    public void printStartMessage() {
+        System.out.println("Начинаем игру!");
+    }
+
+    public void printLetterAlreadyUsed() {
+        System.out.println("Эта буква уже вводилась! Попробуйте другую.");
+    }
+
+    public void printLetterNotInWord() {
+        System.out.println("Такой буквы в слове нет!");
+    }
+
+    public void printEnterOneLetterPromt() {
+        System.out.println("Введите одну букву.");
+    }
+
+    public void printRussianLetterPromt() {
+        System.out.println("Введите букву русского алфавита.");
+    }
+
     public void printHangman(int mistakes) { // 7
         System.out.println(HANGMAN_STAGES[mistakes]);
     }

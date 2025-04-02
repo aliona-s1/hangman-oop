@@ -74,7 +74,11 @@ public class Game {
         return maskedWord.isSecretWordGuessed();
     }
 
+    private boolean isLoss() {
+        return mistakes == MAX_MISTAKES;
+    }
+
     private boolean isFinished() {
-        return mistakes == MAX_MISTAKES || isWin();
+        return isLoss() || isWin();
     }
 }

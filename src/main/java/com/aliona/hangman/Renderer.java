@@ -71,7 +71,7 @@ public class Renderer {
     }
 
     public void printGameInfo(int mistakes, int maxMistakes, List<String> inputtedLetters) {
-        System.out.printf("Ошибок: %s из %s", mistakes, maxMistakes);
+        System.out.printf("Ошибок: %d из %d", mistakes, maxMistakes);
         System.out.println("\nВведенные буквы: " + String.join(",", inputtedLetters));
     }
 

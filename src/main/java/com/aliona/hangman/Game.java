@@ -37,11 +37,11 @@ public class Game {
                 continue;
             }
 
-            if (maskedWord.isLetterInWord(letter)) {
+            try {
                 maskedWord.updateMask(letter);
-            } else {
-                renderer.printLetterNotInWord();
+            } catch (IllegalArgumentException e) {
                 mistakes++;
+                renderer.printLetterNotInWord();
             }
 
             inputtedLetters.add(letter);

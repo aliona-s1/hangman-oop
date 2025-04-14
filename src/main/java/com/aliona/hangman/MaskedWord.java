@@ -18,11 +18,12 @@ public class MaskedWord {
         return mask;
     }
 
-    public boolean isLetterInWord(String letter) {
-        return secretWord.contains(letter);
-    }
-
     public void updateMask(String letter) {
+
+        if (!secretWord.contains(letter)) {
+            throw new IllegalArgumentException("The letter '" + letter + "' is not in the word.");
+        }
+
         StringBuilder updatedMask = new StringBuilder(mask);
 
         for (int i = 0; i < secretWord.length(); i++) {

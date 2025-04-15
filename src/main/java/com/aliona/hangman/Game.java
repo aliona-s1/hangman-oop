@@ -38,7 +38,7 @@ public class Game {
             }
 
             try {
-                maskedWord.updateMask(letter);
+                maskedWord.updateMaskWithLetterValidation(letter);
             } catch (IllegalArgumentException e) {
                 mistakes++;
                 renderer.printLetterNotInWord();

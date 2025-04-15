@@ -18,7 +18,7 @@ public class MaskedWord {
         return mask;
     }
 
-    public void updateMask(String letter) {
+    public void updateMaskWithLetterValidation(String letter) {
 
         if (!secretWord.contains(letter)) {
             throw new IllegalArgumentException("The letter '" + letter + "' is not in the word.");

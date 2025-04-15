@@ -21,7 +21,7 @@ public class Game {
     }
 
     public void start() {
-        renderer.printStartMessage();
+        renderer.printStartGameMessage();
         runGameLoop();
     }
 

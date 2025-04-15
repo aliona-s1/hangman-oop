@@ -62,7 +62,23 @@ public class Renderer {
 ===========
 """};
 
-    public void printStartMessage() {
+    public void printMenuMessage(String start, String exit) {
+        System.out.printf("Хотите начать игру? %s/%s%n", start, exit);
+    }
+
+    public void printReplayPromt(String start, String exit) {
+        System.out.printf("Хотите сыграть еще раз? %s/%s%n", start, exit);
+    }
+
+    public void printExitMessage() {
+        System.out.println("Вы вышли из игры.");
+    }
+
+    public void printInvalidInput(String start, String exit) {
+        System.out.printf("Некорректный ввод. Для начала игры - %s, для выхода - %s.%n", start, exit);
+    }
+
+    public void printStartGameMessage() {
         System.out.println("Начинаем игру!");
     }
 

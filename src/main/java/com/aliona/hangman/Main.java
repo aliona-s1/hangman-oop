@@ -11,7 +11,7 @@ public class Main {
         Renderer renderer = new Renderer();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.printf("Хотите начать игру? %s/%s%n", START, EXIT);
+        renderer.printMenuMessage(START, EXIT);
 
         while (true) {
             String letter = scanner.nextLine().trim().toUpperCase();
@@ -19,13 +19,13 @@ public class Main {
             if (letter.equals(START)) {
                 Game game = new Game(renderer, new MaskedWord(dictionary.getRandomWord()), scanner);
                 game.start();
-                System.out.printf("Хотите сыграть еще раз? %s/%s%n", START, EXIT);
+                renderer.printReplayPromt(START, EXIT);
             } else if (letter.equals(EXIT)) {
-                System.out.println("Вы вышли из игры.");
+                renderer.printExitMessage();
                 scanner.close();
                 break;
             } else {
-                System.out.printf("Некорректный ввод. Для начала игры - %s, для выхода - %s.%n", START, EXIT);
+                renderer.printInvalidInput(START, EXIT);
             }
         }
     }
